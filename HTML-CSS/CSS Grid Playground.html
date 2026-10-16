@@ -1,0 +1,893 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>CSS Grid Playground</title>
+<style>
+:root {
+  --bg: #f0f4f8;
+  --surface: #ffffff;
+  --surface2: #f8fafc;
+  --fg: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --accent: #4f46e5;
+  --flex-color: #15803d; --flex-bg: #dcfce7; --flex-mid: #86efac;
+  --grid-color: #6d28d9; --grid-bg: #ede9fe; --grid-mid: #c4b5fd;
+  --rw-border: #f59e0b; --rw-bg: #fffbeb; --rw-color: #92400e;
+  --code-bg: #0f172a;
+  --code-fg: #e2e8f0;
+  --shadow: 0 2px 8px rgba(0,0,0,0.08);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f172a; --surface: #1e293b; --surface2: #0f172a;
+    --fg: #f1f5f9; --muted: #94a3b8; --border: #334155;
+    --rw-bg: #1c1400; --rw-color: #fde68a;
+    --shadow: 0 2px 8px rgba(0,0,0,0.3);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f172a; --surface: #1e293b; --surface2: #0f172a;
+  --fg: #f1f5f9; --muted: #94a3b8; --border: #334155;
+  --rw-bg: #1c1400; --rw-color: #fde68a;
+  --shadow: 0 2px 8px rgba(0,0,0,0.3);
+  color-scheme: dark;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--fg); }
+
+/* ── HEADER ── */
+.site-header {
+  background: #0f172a;
+  color: #fff;
+  padding: 28px 36px 24px;
+}
+.site-header h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: 4px; }
+.site-header p { font-size: 0.88rem; color: #94a3b8; }
+.header-badges { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.hbadge { font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+.hb-indigo { background: #4f46e5; color: #fff; }
+.hb-purple { background: #7c3aed; color: #fff; }
+.hb-cyan   { background: #0891b2; color: #fff; }
+.hb-green  { background: #059669; color: #fff; }
+
+/* ── PAGE BODY ── */
+.page { padding: 36px 36px; max-width: 900px; margin: 0 auto; }
+
+/* ── SECTION BLOCK ── */
+.section-block {
+  margin-bottom: 56px;
+}
+.section-num {
+  font-size: 0.7rem; font-weight: 700; color: var(--accent);
+  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;
+}
+.section-title {
+  font-size: 1.35rem; font-weight: 800; margin-bottom: 8px;
+}
+.section-desc {
+  font-size: 0.9rem; color: var(--muted); line-height: 1.65; max-width: 620px; margin-bottom: 16px;
+}
+
+/* ── REAL WORLD NOTE ── */
+.real-world {
+  background: var(--rw-bg);
+  border-left: 4px solid var(--rw-border);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  font-size: 0.86rem;
+  color: var(--rw-color);
+  line-height: 1.55;
+}
+.real-world strong { display: block; margin-bottom: 2px; font-size: 0.8rem; }
+
+/* ── CONTROLS ── */
+.controls {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+}
+.ctrl-group { display: flex; flex-direction: column; gap: 5px; }
+.ctrl-group label { font-size: 0.76rem; font-weight: 600; color: var(--muted); }
+.ctrl-group select {
+  font-size: 0.84rem; border: 1px solid var(--border);
+  border-radius: 6px; padding: 5px 8px;
+  background: var(--surface); color: var(--fg);
+}
+.ctrl-group input[type="range"] { width: 130px; }
+.ctrl-val { font-size: 0.78rem; font-weight: 700; color: var(--accent); }
+
+/* ── DEMO BOX ── */
+.demo-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+.demo-label {
+  font-size: 0.74rem; font-weight: 700; color: var(--muted);
+  letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 14px;
+}
+
+/* ── GRID CELLS ── */
+.cell {
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; font-weight: 800; color: #fff;
+  min-height: 58px; transition: all 0.25s;
+}
+.c1 { background: #4f46e5; }
+.c2 { background: #7c3aed; }
+.c3 { background: #0891b2; }
+.c4 { background: #059669; }
+.c5 { background: #d97706; }
+.c6 { background: #dc2626; }
+.c7 { background: #db2777; }
+.c8 { background: #65a30d; }
+
+/* ── AREA CELLS ── */
+.area-cell {
+  border-radius: 8px; padding: 14px 18px;
+  font-weight: 700; font-size: 0.88rem;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 52px; transition: all 0.3s;
+}
+.area-header  { background: #4f46e5; color: #fff; }
+.area-sidebar { background: #7c3aed; color: #fff; }
+.area-main    { background: #0891b2; color: #fff; min-height: 100px; }
+.area-footer  { background: #059669; color: #fff; }
+
+/* ── CODE BLOCK ── */
+.code-block {
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border-radius: 10px;
+  padding: 16px 20px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  line-height: 1.75;
+  overflow-x: auto;
+}
+.cp  { color: #93c5fd; }   /* property */
+.cv  { color: #86efac; }   /* value */
+.cc  { color: #475569; font-style: italic; }  /* comment */
+.ch  { color: #fbbf24; font-weight: 700; }    /* highlight */
+
+/* ── DIVIDER ── */
+.divider {
+  border: none; border-top: 1px solid var(--border); margin-bottom: 56px;
+}
+
+/* ── COMBO GRID ── */
+.combo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.combo-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.combo-header {
+  background: var(--accent);
+  color: #fff;
+  padding: 12px 16px;
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+.combo-use {
+  font-size: 0.74rem; background: rgba(255,255,255,0.18);
+  padding: 3px 8px; border-radius: 4px; display: inline-block; margin-top: 4px;
+}
+.combo-body { padding: 14px; }
+.combo-code {
+  background: var(--code-bg); color: var(--code-fg);
+  border-radius: 7px; padding: 10px 12px;
+  font-family: 'Courier New', monospace; font-size: 0.75rem;
+  line-height: 1.6; margin-bottom: 10px;
+}
+.combo-mini {
+  height: 72px; border-radius: 7px; border: 1px solid var(--border);
+  overflow: hidden; margin-bottom: 10px;
+}
+.combo-note { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .page { padding: 24px 18px; }
+  .site-header { padding: 20px 20px 18px; }
+  .section-title { font-size: 1.15rem; }
+}
+</style>
+
+<header class="site-header">
+  <h1>CSS Grid Playground</h1>
+  <p>Every property — see it change live, then understand why</p>
+  <div class="header-badges">
+    <span class="hbadge hb-indigo">display: grid</span>
+    <span class="hbadge hb-purple">columns &amp; rows</span>
+    <span class="hbadge hb-cyan">gap · fr · repeat()</span>
+    <span class="hbadge hb-green">areas · span · auto</span>
+  </div>
+</header>
+
+<div class="page">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 01 — display: grid -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-block">
+  <div class="section-num">01</div>
+  <div class="section-title">display: grid</div>
+  <div class="section-desc">One property turns a normal container into a grid. Without it, children stack vertically like a list. With it, you control rows and columns. Nothing else changes until you add more grid rules.</div>
+
+  <div class="real-world">
+    <strong>💡 Real world:</strong>
+    A classroom seating chart — rows of desks from front to back, columns of desks side to side. The moment you say "this is a grid," the browser treats every child as a cell in that chart.
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <label>Toggle grid on/off</label>
+      <select id="s01-toggle">
+        <option value="on">display: grid ✓</option>
+        <option value="off">display: block (off)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="demo-label">Live preview</div>
+    <div id="s01-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+      <div class="cell c1">1</div>
+      <div class="cell c2">2</div>
+      <div class="cell c3">3</div>
+      <div class="cell c4">4</div>
+      <div class="cell c5">5</div>
+      <div class="cell c6">6</div>
+    </div>
+  </div>
+
+  <div class="code-block">
+<span class="cc">/* OFF — all boxes stack vertically, one per line */</span>
+.container { }
+
+<span class="cc">/* ON — boxes sit side by side in rows and columns */</span>
+.container { <span class="ch">display: grid;</span> }
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 02 — grid-template-columns -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-block">
+  <div class="section-num">02</div>
+  <div class="section-title">grid-template-columns</div>
+  <div class="section-desc">Defines how many columns the grid has and how wide each one is. Each value = one column. Three values = three columns. You can mix fixed widths (200px) with flexible ones (1fr).</div>
+
+  <div class="real-world">
+    <strong>💡 Real world:</strong>
+    A building floor plan — one narrow label column for the floor name and three equal room columns: <code>80px repeat(3, 1fr)</code>. The label stays fixed; the rooms share the remaining width equally.
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <label>Columns</label>
+      <select id="s02-cols">
+        <option value="1fr">1fr — one column</option>
+        <option value="1fr 1fr" selected>1fr 1fr — two equal</option>
+        <option value="1fr 1fr 1fr">1fr 1fr 1fr — three equal</option>
+        <option value="200px 1fr">200px 1fr — fixed + flex</option>
+        <option value="1fr 2fr 1fr">1fr 2fr 1fr — wide middle</option>
+        <option value="80px repeat(3,1fr)">80px repeat(3,1fr) — label + rooms</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="demo-label">Live preview</div>
+    <div id="s02-grid" style="display:grid;gap:10px;grid-template-columns:1fr 1fr;">
+      <div class="cell c1">1</div>
+      <div class="cell c2">2</div>
+      <div class="cell c3">3</div>
+      <div class="cell c4">4</div>
+      <div class="cell c5">5</div>
+    </div>
+  </div>
+
+  <div class="code-block">
+.container {
+  display: grid;
+  <span class="cp">grid-template-columns</span>: <span class="ch" id="s02-cv">1fr 1fr</span>;
+}
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 03 — grid-template-rows -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-block">
+  <div class="section-num">03</div>
+  <div class="section-title">grid-template-rows</div>
+  <div class="section-desc">Same idea as columns but for rows. Set each row to a fixed height, let it fit content (<code>auto</code>), or fill available space (<code>1fr</code>). Rows default to <code>auto</code> — you mostly set them for full-page layouts.</div>
+
+  <div class="real-world">
+    <strong>💡 Real world:</strong>
+    A school building with two floors — each floor is one row. The label row shrinks to fit the text; the room rows share the remaining height equally: <code>auto auto</code>.
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <label>Rows</label>
+      <select id="s03-rows">
+        <option value="auto auto auto" selected>auto auto auto — fit content</option>
+        <option value="80px auto 80px">80px auto 80px — fixed top/bottom</option>
+        <option value="1fr 2fr 1fr">1fr 2fr 1fr — proportional</option>
+        <option value="100px 100px 100px">100px 100px 100px — all fixed</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="demo-label">Live preview (3 rows × 2 columns)</div>
+    <div id="s03-grid" style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto;gap:10px;min-height:220px;">
+      <div class="cell c1">1</div>
+      <div class="cell c2">2</div>
+      <div class="cell c3">3</div>
+      <div class="cell c4">4</div>
+      <div class="cell c5">5</div>
+      <div class="cell c6">6</div>
+    </div>
+  </div>
+
+  <div class="code-block">
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  <span class="cp">grid-template-rows</span>: <span class="ch" id="s03-cv">auto auto auto</span>;
+}
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 04 — gap -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-block">
+  <div class="section-num">04</div>
+  <div class="section-title">gap</div>
+  <div class="section-desc">The space between grid cells. One value = same gap everywhere. Two values = row gap first, then column gap. It only applies between cells — never outside the grid edges.</div>
+
+  <div class="real-world">
+    <strong>💡 Real world:</strong>
+    Gaps between rooms on a floor plan — the walls between rooms. Every room gets the same wall thickness without you calculating anything: <code>gap: 12px</code>.
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <label>Gap: <span class="ctrl-val" id="s04-val">16px</span></label>
+      <input type="range" id="s04-gap" min="0" max="48" value="16">
+    </div>
+    <div class="ctrl-group">
+      <label>Or: two values</label>
+      <select id="s04-two">
+        <option value="">— same for rows &amp; columns —</option>
+        <option value="8px 32px">8px rows, 32px columns</option>
+        <option value="32px 8px">32px rows, 8px columns</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="demo-label">Live preview</div>
+    <div id="s04-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+      <div class="cell c1">1</div>
+      <div class="cell c2">2</div>
+      <div class="cell c3">3</div>
+      <div class="cell c4">4</div>
+      <div class="cell c5">5</div>
+      <div class="cell c6">6</div>
+    </div>
+  </div>
+
+  <div class="code-block">
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  <span class="cp">gap</span>: <span class="ch" id="s04-cv">16px</span>;
+}
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 05 — fr unit -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-block">
+  <div class="section-num">05</div>
+  <div class="section-title">The fr unit</div>
+  <div class="section-desc"><code>fr</code> = fraction of available space. <code>1fr 1fr</code> = two equal columns. <code>1fr 3fr</code> = second column is three times wider. The fr unit only exists in CSS Grid — it does not work anywhere else.</div>
+
+  <div class="real-world">
+    <strong>💡 Real world:</strong>
+    A canteen with a small serving counter and a large dining area: <code>1fr 3fr</code>. The dining area is always three times the counter's width, no matter how wide the room is.
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <label>Column ratio</label>
+      <select id="s05-cols">
+        <option value="1fr 1fr" selected>1fr 1fr — equal halves</option>
+        <option value="1fr 2fr">1fr 2fr — second twice as wide</option>
+        <option value="1fr 3fr">1fr 3fr — second three times wide</option>
+        <option value="2fr 1fr 2fr">2fr 1fr 2fr — wide | narrow | wide</option>
+        <option value="1fr 1fr 1fr 1fr">1fr 1fr 1fr 1fr — four equal</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="demo-label">Live preview — watch the widths change</div>
+    <div id="s05-grid" style="display:grid;gap:10px;grid-template-columns:1fr 1fr;">
+      <div class="cell c1">1</div>
+      <div class="cell c2">2</div>
+      <div class="cell c3">3</div>
+      <div class="cell c4">4</div>
+    </div>
+  </div>
+
+  <div class="code-block">
+.container {
+  display: grid;
+  <span class="cp">grid-template-columns</span>: <span class="ch" id="s05-cv">1fr 1fr</span>; <span class="cc">/* fractions of available space */</span>
+  gap: 10px;
+}
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 06 — repeat() -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-block">
+  <div class="section-num">06</div>
+  <div class="section-title">repeat()</div>
+  <div class="section-desc"><code>repeat(3, 1fr)</code> is shorthand for <code>1fr 1fr 1fr</code>. First value = how many columns. Second = width of each. Keeps CSS readable when you have many equal columns. Change one number to change everything.</div>
+
+  <div class="real-world">
+    <strong>💡 Real world:</strong>
+    Six lockers side by side in a corridor: <code>repeat(6, 1fr)</code>. All six are exactly the same width. Change 6 to 4 and you have four wider lockers — zero other changes needed.
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <label>Number of columns</label>
+      <select id="s06-count">
+        <option value="1">repeat(1, 1fr)</option>
+        <option value="2">repeat(2, 1fr)</option>
+        <option value="3" selected>repeat(3, 1fr)</option>
+        <option value="4">repeat(4, 1fr)</option>
+        <option value="6">repeat(6, 1fr)</option>
+      </select>
+    </div>
+    <div class="ctrl-group">
+      <label>Column width</label>
+      <select id="s06-width">
+        <option value="1fr" selected>1fr — flexible</option>
+        <option value="120px">120px — fixed</option>
+        <option value="minmax(80px,1fr)">minmax(80px, 1fr)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="demo-label">Live preview (6 cells)</div>
+    <div id="s06-grid" style="display:grid;gap:10px;grid-template-columns:repeat(3,1fr);">
+      <div class="cell c1">1</div>
+      <div class="cell c2">2</div>
+      <div class="cell c3">3</div>
+      <div class="cell c4">4</div>
+      <div class="cell c5">5</div>
+      <div class="cell c6">6</div>
+    </div>
+  </div>
+
+  <div class="code-block">
+.container {
+  display: grid;
+  <span class="cp">grid-template-columns</span>: <span class="ch">repeat(<span id="s06-n">3</span>, <span id="s06-w">1fr</span>)</span>;
+  gap: 10px;
+}
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 07 — grid-column: span -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-block">
+  <div class="section-num">07</div>
+  <div class="section-title">grid-column: span</div>
+  <div class="section-desc"><code>grid-column: span 2</code> makes one item stretch across two columns. You apply this to the child — not the container. Everything else reflows around the spanning item automatically.</div>
+
+  <div class="real-world">
+    <strong>💡 Real world:</strong>
+    A notice board where the top notice is pinned across all three columns — it reads "URGENT" and is wider than the rest. All other notices sit below it in their normal single-column slots.
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <label>Cell 1 spans</label>
+      <select id="s07-span">
+        <option value="1" selected>1 — normal</option>
+        <option value="2">span 2</option>
+        <option value="3">span 3</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="demo-label">Live preview — cell 1 changes span (3-column grid)</div>
+    <div id="s07-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+      <div class="cell c1" id="s07-cell1">1</div>
+      <div class="cell c2">2</div>
+      <div class="cell c3">3</div>
+      <div class="cell c4">4</div>
+      <div class="cell c5">5</div>
+      <div class="cell c6">6</div>
+    </div>
+  </div>
+
+  <div class="code-block">
+<span class="cc">/* Applied to the CHILD, not the container */</span>
+.notice-urgent {
+  <span class="cp">grid-column</span>: <span class="ch" id="s07-cv">span 1</span>;
+}
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 08 — grid-template-areas -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-block">
+  <div class="section-num">08</div>
+  <div class="section-title">grid-template-areas</div>
+  <div class="section-desc">Name each region in plain words, then draw the layout using those names. The ASCII art in your CSS literally IS the layout. Read it and you immediately see where every region goes — no numbers needed.</div>
+
+  <div class="real-world">
+    <strong>💡 Real world:</strong>
+    An architect's floor plan drawn in words — "entrance", "hall", "office", "bathroom". Move the office to the other side of the hall by changing the word positions. Zero rooms need to be physically rebuilt.
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <label>Layout</label>
+      <select id="s08-layout">
+        <option value="sidebar-left">Sidebar left (classic)</option>
+        <option value="sidebar-right">Sidebar right (swap)</option>
+        <option value="no-sidebar">No sidebar (full width)</option>
+        <option value="two-main">Two equal columns</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="demo-label">Live preview</div>
+    <div id="s08-grid" style="display:grid;grid-template-columns:180px 1fr;grid-template-areas:'header header' 'sidebar main' 'footer footer';gap:10px;">
+      <div class="area-cell area-header"  style="grid-area:header">header</div>
+      <div class="area-cell area-sidebar" style="grid-area:sidebar">sidebar</div>
+      <div class="area-cell area-main"    style="grid-area:main">main</div>
+      <div class="area-cell area-footer"  style="grid-area:footer">footer</div>
+    </div>
+  </div>
+
+  <div class="code-block">
+.page {
+  display: grid;
+  <span class="cp">grid-template-columns</span>: <span class="ch" id="s08-cols-cv">180px 1fr</span>;
+  <span class="cp">grid-template-areas</span>:
+<span class="cv" id="s08-areas-cv">    "header  header"
+    "sidebar main"
+    "footer  footer"</span>;
+  gap: 10px;
+}
+.site-header  { <span class="cp">grid-area</span>: <span class="cv">header</span>; }
+.sidebar      { <span class="cp">grid-area</span>: <span class="cv">sidebar</span>; }
+.main-content { <span class="cp">grid-area</span>: <span class="cv">main</span>; }
+.site-footer  { <span class="cp">grid-area</span>: <span class="cv">footer</span>; }
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 09 — auto -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-block">
+  <div class="section-num">09</div>
+  <div class="section-title">auto — content-sized tracks</div>
+  <div class="section-desc"><code>auto</code> means "make this track as big as it needs to be for its content." For rows, this is the default — each row is as tall as its tallest cell. Combine with <code>1fr</code> to make one track stretch and others hug their content.</div>
+
+  <div class="real-world">
+    <strong>💡 Real world:</strong>
+    A school building layout: the floor-label row is just tall enough to show "1st Floor" text (<code>auto</code>), the room rows share the remaining height equally (<code>1fr</code>): <code>grid-template-rows: auto 1fr auto</code>.
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <label>Row sizes</label>
+      <select id="s09-rows">
+        <option value="auto 1fr auto" selected>auto 1fr auto — classic page</option>
+        <option value="auto auto auto">auto auto auto — all fit content</option>
+        <option value="60px 1fr 40px">60px 1fr 40px — fixed header/footer</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="demo-label">Live preview (single column, 3 rows — height: 240px)</div>
+    <div id="s09-grid" style="display:grid;grid-template-columns:1fr;grid-template-rows:auto 1fr auto;gap:10px;height:240px;">
+      <div class="area-cell area-header">header (auto)</div>
+      <div class="area-cell area-main">main (1fr — fills remaining space)</div>
+      <div class="area-cell area-footer">footer (auto)</div>
+    </div>
+  </div>
+
+  <div class="code-block">
+.page {
+  display: grid;
+  grid-template-columns: 1fr;
+  <span class="cp">grid-template-rows</span>: <span class="ch" id="s09-cv">auto 1fr auto</span>;
+  height: 100vh; <span class="cc">/* full screen height */</span>
+}
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 10 — Combinations -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-block">
+  <div class="section-num">10</div>
+  <div class="section-title">Common Combinations</div>
+  <div class="section-desc">These are the patterns you'll use most often. Each one is a ready recipe — copy it, adjust the values, and you have a working layout.</div>
+
+  <div class="combo-grid">
+
+    <div class="combo-card">
+      <div class="combo-header">
+        Three-column card grid
+        <div class="combo-use">Services · Notices · Portfolio</div>
+      </div>
+      <div class="combo-body">
+        <div class="combo-code">display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 20px;</div>
+        <div class="combo-mini" style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;padding:7px;background:var(--surface2);border-radius:7px;border:1px solid var(--border);">
+          <div class="cell c1" style="min-height:36px;font-size:.85rem;">1</div>
+          <div class="cell c2" style="min-height:36px;font-size:.85rem;">2</div>
+          <div class="cell c3" style="min-height:36px;font-size:.85rem;">3</div>
+        </div>
+        <p class="combo-note">Three equal cards side by side. Change repeat() count for a different number of columns.</p>
+      </div>
+    </div>
+
+    <div class="combo-card">
+      <div class="combo-header" style="background:#7c3aed;">
+        Sidebar + main
+        <div class="combo-use">Floor plan · Dashboard</div>
+      </div>
+      <div class="combo-body">
+        <div class="combo-code">display: grid;
+grid-template-columns: 220px 1fr;
+gap: 24px;</div>
+        <div class="combo-mini" style="display:grid;grid-template-columns:55px 1fr;gap:5px;padding:7px;background:var(--surface2);border-radius:7px;border:1px solid var(--border);">
+          <div class="cell c2" style="min-height:50px;font-size:.7rem;">side</div>
+          <div class="cell c3" style="min-height:50px;font-size:.7rem;">main</div>
+        </div>
+        <p class="combo-note">Fixed-width label column, flexible content. Swap to <code>1fr 220px</code> to move label to the right.</p>
+      </div>
+    </div>
+
+    <div class="combo-card">
+      <div class="combo-header" style="background:#0891b2;">
+        Full-page layout
+        <div class="combo-use">Any page with header &amp; footer</div>
+      </div>
+      <div class="combo-body">
+        <div class="combo-code">display: grid;
+grid-template-columns: 220px 1fr;
+grid-template-areas:
+  "header  header"
+  "sidebar main"
+  "footer  footer";</div>
+        <div class="combo-mini" style="display:grid;grid-template-columns:48px 1fr;grid-template-areas:'h h' 's m' 'f f';gap:3px;padding:6px;background:var(--surface2);border-radius:7px;border:1px solid var(--border);">
+          <div class="area-cell area-header"  style="grid-area:h;min-height:12px;font-size:.55rem;padding:3px;">H</div>
+          <div class="area-cell area-sidebar" style="grid-area:s;min-height:22px;font-size:.55rem;padding:3px;">S</div>
+          <div class="area-cell area-main"    style="grid-area:m;font-size:.55rem;padding:3px;">M</div>
+          <div class="area-cell area-footer"  style="grid-area:f;min-height:12px;font-size:.55rem;padding:3px;">F</div>
+        </div>
+        <p class="combo-note">Named areas make the layout readable as words. Move sidebar right by swapping two words.</p>
+      </div>
+    </div>
+
+    <div class="combo-card">
+      <div class="combo-header" style="background:#059669;">
+        Featured item (span)
+        <div class="combo-use">Notice board · Hero card</div>
+      </div>
+      <div class="combo-body">
+        <div class="combo-code">display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 16px;
+
+/* on the featured child: */
+.featured { grid-column: span 2; }</div>
+        <div class="combo-mini" style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:6px;background:var(--surface2);border-radius:7px;border:1px solid var(--border);">
+          <div class="cell c4" style="min-height:28px;font-size:.65rem;grid-column:span 2;">featured</div>
+          <div class="cell c5" style="min-height:28px;font-size:.75rem;">3</div>
+          <div class="cell c6" style="min-height:28px;font-size:.75rem;">4</div>
+          <div class="cell c1" style="min-height:28px;font-size:.75rem;">5</div>
+          <div class="cell c2" style="min-height:28px;font-size:.75rem;">6</div>
+        </div>
+        <p class="combo-note">One child spans two columns. Everything else reflows around it automatically.</p>
+      </div>
+    </div>
+
+    <div class="combo-card">
+      <div class="combo-header" style="background:#d97706;">
+        2×2 grid
+        <div class="combo-use">Four rooms · Four features</div>
+      </div>
+      <div class="combo-body">
+        <div class="combo-code">display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 16px;</div>
+        <div class="combo-mini" style="display:grid;grid-template-columns:repeat(2,1fr);gap:4px;padding:6px;background:var(--surface2);border-radius:7px;border:1px solid var(--border);">
+          <div class="cell c5" style="min-height:24px;font-size:.75rem;">A</div>
+          <div class="cell c6" style="min-height:24px;font-size:.75rem;">B</div>
+          <div class="cell c7" style="min-height:24px;font-size:.75rem;">C</div>
+          <div class="cell c8" style="min-height:24px;font-size:.75rem;">D</div>
+        </div>
+        <p class="combo-note">Four equal boxes in a 2×2 layout. Add more and they flow into new rows automatically.</p>
+      </div>
+    </div>
+
+    <div class="combo-card">
+      <div class="combo-header" style="background:#dc2626;">
+        Auto-fill responsive
+        <div class="combo-use">Gallery · Locker row</div>
+      </div>
+      <div class="combo-body">
+        <div class="combo-code">display: grid;
+grid-template-columns:
+  repeat(auto-fill,
+    minmax(200px, 1fr));
+gap: 16px;</div>
+        <div class="combo-mini" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:4px;padding:6px;background:var(--surface2);border-radius:7px;border:1px solid var(--border);">
+          <div class="cell c6" style="min-height:24px;font-size:.7rem;">1</div>
+          <div class="cell c1" style="min-height:24px;font-size:.7rem;">2</div>
+          <div class="cell c2" style="min-height:24px;font-size:.7rem;">3</div>
+          <div class="cell c3" style="min-height:24px;font-size:.7rem;">4</div>
+        </div>
+        <p class="combo-note">Columns appear and disappear as the container resizes. No media query needed.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- .page -->
+
+<script>
+// S01
+document.getElementById('s01-toggle').addEventListener('change', function() {
+  const g = document.getElementById('s01-grid');
+  if (this.value === 'on') {
+    g.style.display = 'grid';
+    g.style.gridTemplateColumns = 'repeat(3,1fr)';
+  } else {
+    g.style.display = 'block';
+  }
+});
+
+// S02
+document.getElementById('s02-cols').addEventListener('change', function() {
+  document.getElementById('s02-grid').style.gridTemplateColumns = this.value;
+  document.getElementById('s02-cv').textContent = this.value;
+});
+
+// S03
+document.getElementById('s03-rows').addEventListener('change', function() {
+  const g = document.getElementById('s03-grid');
+  g.style.gridTemplateRows = this.value;
+  document.getElementById('s03-cv').textContent = this.value;
+  g.style.minHeight = this.value.includes('1fr') ? '220px' : 'auto';
+});
+
+// S04
+const s04gap = document.getElementById('s04-gap');
+const s04two = document.getElementById('s04-two');
+function updateS04() {
+  const two = s04two.value;
+  const val = two || s04gap.value + 'px';
+  document.getElementById('s04-grid').style.gap = val;
+  document.getElementById('s04-val').textContent = s04gap.value + 'px';
+  document.getElementById('s04-cv').textContent = val;
+}
+s04gap.addEventListener('input', updateS04);
+s04two.addEventListener('change', updateS04);
+
+// S05
+document.getElementById('s05-cols').addEventListener('change', function() {
+  document.getElementById('s05-grid').style.gridTemplateColumns = this.value;
+  document.getElementById('s05-cv').textContent = this.value;
+});
+
+// S06
+function updateS06() {
+  const n = document.getElementById('s06-count').value;
+  const w = document.getElementById('s06-width').value;
+  document.getElementById('s06-grid').style.gridTemplateColumns = `repeat(${n},${w})`;
+  document.getElementById('s06-n').textContent = n;
+  document.getElementById('s06-w').textContent = w;
+}
+document.getElementById('s06-count').addEventListener('change', updateS06);
+document.getElementById('s06-width').addEventListener('change', updateS06);
+
+// S07
+document.getElementById('s07-span').addEventListener('change', function() {
+  const cell = document.getElementById('s07-cell1');
+  const v = this.value;
+  cell.style.gridColumn = v === '1' ? '' : `span ${v}`;
+  document.getElementById('s07-cv').textContent = v === '1' ? 'span 1' : `span ${v}`;
+});
+
+// S08
+document.getElementById('s08-layout').addEventListener('change', function() {
+  const g = document.getElementById('s08-grid');
+  const layouts = {
+    'sidebar-left':  { cols: '180px 1fr', areas: '"header header" "sidebar main" "footer footer"',  display: '    "header  header"\n    "sidebar main"\n    "footer  footer"' },
+    'sidebar-right': { cols: '1fr 180px', areas: '"header header" "main sidebar" "footer footer"',  display: '    "header  header"\n    "main    sidebar"\n    "footer  footer"' },
+    'no-sidebar':    { cols: '1fr',       areas: '"header" "main" "footer"',                         display: '    "header"\n    "main"\n    "footer"' },
+    'two-main':      { cols: '1fr 1fr',   areas: '"header header" "main sidebar" "footer footer"',  display: '    "header  header"\n    "main    sidebar"\n    "footer  footer"' }
+  };
+  const l = layouts[this.value];
+  g.style.gridTemplateColumns = l.cols;
+  g.style.gridTemplateAreas = l.areas;
+  document.getElementById('s08-cols-cv').textContent = l.cols;
+  document.getElementById('s08-areas-cv').textContent = l.display;
+});
+
+// S09
+document.getElementById('s09-rows').addEventListener('change', function() {
+  document.getElementById('s09-grid').style.gridTemplateRows = this.value;
+  document.getElementById('s09-cv').textContent = this.value;
+});
+</script>
+<p>Created by Rishop Babu</p>
+</body></html>

@@ -1,0 +1,580 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Flexbox Playground</title>
+<style>
+/* ── UNIFIED DESIGN SYSTEM TOKENS ── */
+:root {
+  --bg:#f0f4f8;--surface:#fff;--surface2:#f8fafc;--fg:#0f172a;--muted:#64748b;--border:#e2e8f0;
+  --accent:#4f46e5;
+  --flex-color:#15803d;--flex-bg:#dcfce7;--flex-mid:#86efac;
+  --grid-color:#6d28d9;--grid-bg:#ede9fe;--grid-mid:#c4b5fd;
+  --rw-border:#f59e0b;--rw-bg:#fffbeb;--rw-color:#92400e;
+  --code-bg:#0f172a;--code-fg:#e2e8f0;
+  --shadow:0 2px 8px rgba(0,0,0,0.08);
+  color-scheme:light;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f172a;--surface:#1e293b;--surface2:#0f172a;--fg:#f1f5f9;--muted:#94a3b8;--border:#334155;
+    --flex-bg:#052e16;--flex-mid:#14532d;--flex-color:#4ade80;
+    --grid-bg:#2e1065;--grid-mid:#4c1d95;--grid-color:#c4b5fd;
+    --rw-bg:#1c1400;--rw-color:#fbbf24;
+    --shadow:0 2px 8px rgba(0,0,0,0.3);color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f172a;--surface:#1e293b;--surface2:#0f172a;--fg:#f1f5f9;--muted:#94a3b8;--border:#334155;
+  --flex-bg:#052e16;--flex-mid:#14532d;--flex-color:#4ade80;
+  --grid-bg:#2e1065;--grid-mid:#4c1d95;--grid-color:#c4b5fd;
+  --rw-bg:#1c1400;--rw-color:#fbbf24;
+  --shadow:0 2px 8px rgba(0,0,0,0.3);color-scheme:dark;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--fg);min-height:100vh;}
+
+/* ── HEADER ── */
+.site-header{background:#0f172a;color:#fff;padding:28px 36px 24px;}
+.site-header h1{font-size:1.5rem;font-weight:800;margin-bottom:4px;}
+.site-header p{font-size:.88rem;color:#94a3b8;}
+.header-badges{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+.hbadge{font-size:.72rem;font-weight:700;padding:4px 12px;border-radius:20px;}
+.hbadge-flex{background:#dcfce7;color:#15803d;}
+.hbadge-dark{background:#1e293b;color:#94a3b8;border:1px solid #334155;}
+
+/* ── PAGE ── */
+.page{padding:36px 36px;max-width:900px;margin:0 auto;}
+
+/* ── SECTION BLOCK ── */
+.section-block{margin-bottom:56px;}
+.section-num{font-size:.7rem;font-weight:700;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
+.section-title{font-size:1.35rem;font-weight:800;margin-bottom:8px;}
+.section-desc{font-size:.9rem;color:var(--muted);line-height:1.65;max-width:660px;margin-bottom:16px;}
+.section-desc code{font-family:monospace;background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:1px 5px;font-size:.85em;color:var(--accent);}
+
+/* ── REAL WORLD NOTE ── */
+.real-world{background:var(--rw-bg);border-left:4px solid var(--rw-border);border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:18px;font-size:.85rem;color:var(--rw-color);line-height:1.55;}
+.real-world strong{font-weight:700;}
+
+/* ── CONTROLS BAR ── */
+.controls-bar{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.ctrl-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.ctrl-group label{font-size:.8rem;font-weight:600;color:var(--muted);white-space:nowrap;}
+.ctrl-group select{font-size:.82rem;padding:5px 8px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--fg);cursor:pointer;}
+.ctrl-group input[type=range]{accent-color:var(--accent);width:130px;cursor:pointer;}
+.rv{font-size:.82rem;font-weight:700;color:var(--accent);min-width:36px;}
+
+/* Toggle buttons */
+.btn-group{display:flex;flex-wrap:wrap;gap:4px;}
+.cbtn{font-size:.78rem;padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);cursor:pointer;font-family:'Segoe UI',Arial,sans-serif;transition:all .12s;white-space:nowrap;}
+.cbtn:hover{color:var(--fg);border-color:var(--accent);}
+.cbtn.on{background:var(--flex-bg);color:var(--flex-color);border-color:var(--flex-mid);font-weight:700;}
+
+/* ── DEMO BOX ── */
+.demo-area{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:14px;min-height:90px;overflow:hidden;}
+
+/* ── CELL COLORS (unified across all playgrounds) ── */
+.cell{border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;color:#fff;transition:all .3s;}
+.c1{background:#4f46e5;}.c2{background:#7c3aed;}.c3{background:#0891b2;}
+.c4{background:#059669;}.c5{background:#d97706;}.c6{background:#dc2626;}
+.c7{background:#db2777;}.c8{background:#65a30d;}
+.sz{width:52px;height:52px;}
+/* Special outlined cell for property demos */
+.cell-focus{outline:2.5px dashed var(--accent);outline-offset:3px;}
+
+/* ── CODE BLOCK ── */
+.code-block{background:var(--code-bg);border-radius:9px;padding:14px 16px;font-family:monospace;font-size:.76rem;line-height:1.8;color:var(--code-fg);overflow-x:auto;}
+.kw{color:#93c5fd;}.prop{color:#86efac;}.val{color:#fde68a;}.live{color:#f472b6;font-weight:700;}.cmt{color:#475569;font-style:italic;}
+
+/* ── DIVIDER ── */
+.divider{border:none;border-top:1px solid var(--border);margin-bottom:56px;}
+
+/* ── COMBINATIONS ── */
+.combo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:28px;}
+.combo-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;box-shadow:var(--shadow);}
+.combo-name{font-size:.85rem;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.combo-tag{font-size:.68rem;background:var(--flex-bg);color:var(--flex-color);border-radius:4px;padding:2px 8px;font-weight:600;}
+.combo-use{font-size:.78rem;color:var(--muted);margin-bottom:12px;line-height:1.5;}
+.combo-code{background:var(--surface2);border-radius:6px;padding:10px 12px;font-family:monospace;font-size:.73rem;line-height:1.9;color:var(--muted);}
+.combo-code .p{color:#4f46e5;font-weight:600;}.combo-code .v{color:#059669;}
+
+/* ── CHEAT STRIP ── */
+.cheat-strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:12px;}
+.cs-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:13px;box-shadow:var(--shadow);}
+.cs-prop{font-family:monospace;font-size:.75rem;color:var(--accent);font-weight:700;margin-bottom:8px;}
+.cs-row{font-size:.72rem;padding:3px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:8px;}
+.cs-row:last-child{border:none;}
+.cs-v{font-family:monospace;font-size:.7rem;color:var(--muted);}
+.cs-d{color:var(--fg);}
+
+/* ── THEME BTN ── */
+.theme-btn{position:fixed;top:16px;right:16px;background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:8px;padding:7px 13px;font-size:.78rem;font-weight:600;cursor:pointer;z-index:99;}
+</style>
+
+<button class="theme-btn" onclick="toggleTheme()">☀︎ / ☾</button>
+
+<div class="site-header">
+  <h1>⚡ Flexbox Playground</h1>
+  <p>9 properties · live demos · real-world examples · combinations guide</p>
+  <div class="header-badges">
+    <span class="hbadge hbadge-flex">🟢 Flexbox — 1D layouts</span>
+    <span class="hbadge hbadge-dark">Row or Column · Content-driven</span>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- 01 · display:flex -->
+<div class="section-block">
+  <div class="section-num">01 / 09</div>
+  <div class="section-title">display: flex</div>
+  <div class="section-desc">The starting point. Without it, block elements stack vertically. Add <code>display:flex</code> and children instantly line up in a row.</div>
+  <div class="real-world"><strong>🏫 School analogy:</strong> Students in a class standing in a line (flex) vs each sitting separately on their own row of desks (block).</div>
+  <div class="controls-bar">
+    <div class="ctrl-group"><label>display:</label>
+      <div class="btn-group">
+        <button class="cbtn on" onclick="s1(this,'block')">block</button>
+        <button class="cbtn" onclick="s1(this,'flex')">flex</button>
+      </div>
+    </div>
+  </div>
+  <div class="demo-area">
+    <div id="d01" style="display:block;gap:8px;">
+      <div class="cell c1 sz">A</div>
+      <div class="cell c2 sz">B</div>
+      <div class="cell c3 sz">C</div>
+      <div class="cell c4 sz">D</div>
+    </div>
+  </div>
+  <div class="code-block"><span class="kw">.container</span> {
+  <span class="prop">display</span>: <span id="c01" class="live">block</span>;
+}</div>
+</div>
+<hr class="divider">
+
+<!-- 02 · flex-direction -->
+<div class="section-block">
+  <div class="section-num">02 / 09</div>
+  <div class="section-title">flex-direction</div>
+  <div class="section-desc">Controls which direction children flow. <code>row</code> is the default (left to right). <code>column</code> stacks them vertically.</div>
+  <div class="real-world"><strong>🏫 School analogy:</strong> Use <code>row</code> for students sitting side-by-side across a single desk. Use <code>column</code> for a queue at the canteen window.</div>
+  <div class="controls-bar">
+    <div class="ctrl-group"><label>flex-direction:</label>
+      <div class="btn-group">
+        <button class="cbtn on" onclick="s2(this,'row')">row</button>
+        <button class="cbtn" onclick="s2(this,'row-reverse')">row-reverse</button>
+        <button class="cbtn" onclick="s2(this,'column')">column</button>
+        <button class="cbtn" onclick="s2(this,'column-reverse')">column-reverse</button>
+      </div>
+    </div>
+  </div>
+  <div class="demo-area">
+    <div id="d02" style="display:flex;flex-direction:row;gap:8px;">
+      <div class="cell c1 sz">A</div>
+      <div class="cell c2 sz">B</div>
+      <div class="cell c3 sz">C</div>
+      <div class="cell c4 sz">D</div>
+    </div>
+  </div>
+  <div class="code-block"><span class="kw">.container</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-direction</span>: <span id="c02" class="live">row</span>;
+}</div>
+</div>
+<hr class="divider">
+
+<!-- 03 · justify-content -->
+<div class="section-block">
+  <div class="section-num">03 / 09</div>
+  <div class="section-title">justify-content</div>
+  <div class="section-desc">Distributes space <strong>along the main axis</strong> — horizontal when direction is row. Controls how items are spaced from each other.</div>
+  <div class="real-world"><strong>🏫 School analogy:</strong> <code>space-between</code> puts the teacher's desk at the left edge, notice board at the right. <code>center</code> clusters the desks in the middle of the room.</div>
+  <div class="controls-bar">
+    <div class="ctrl-group"><label>justify-content:</label>
+      <div class="btn-group">
+        <button class="cbtn on" onclick="s3(this,'flex-start')">flex-start</button>
+        <button class="cbtn" onclick="s3(this,'center')">center</button>
+        <button class="cbtn" onclick="s3(this,'flex-end')">flex-end</button>
+        <button class="cbtn" onclick="s3(this,'space-between')">space-between</button>
+        <button class="cbtn" onclick="s3(this,'space-around')">space-around</button>
+        <button class="cbtn" onclick="s3(this,'space-evenly')">space-evenly</button>
+      </div>
+    </div>
+  </div>
+  <div class="demo-area">
+    <div id="d03" style="display:flex;justify-content:flex-start;gap:8px;">
+      <div class="cell c1 sz">A</div>
+      <div class="cell c2 sz">B</div>
+      <div class="cell c3 sz">C</div>
+      <div class="cell c4 sz">D</div>
+    </div>
+  </div>
+  <div class="code-block"><span class="kw">.container</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">justify-content</span>: <span id="c03" class="live">flex-start</span>;
+}</div>
+</div>
+<hr class="divider">
+
+<!-- 04 · align-items -->
+<div class="section-block">
+  <div class="section-num">04 / 09</div>
+  <div class="section-title">align-items</div>
+  <div class="section-desc">Aligns children on the <strong>cross axis</strong> — vertical when direction is row. Cells have different heights so you can clearly see the effect.</div>
+  <div class="real-world"><strong>🏫 School analogy:</strong> Lockers of different heights lined up in a row — <code>center</code> aligns them to the middle, <code>flex-end</code> aligns them to the floor, <code>stretch</code> makes them all fill the ceiling.</div>
+  <div class="controls-bar">
+    <div class="ctrl-group"><label>align-items:</label>
+      <div class="btn-group">
+        <button class="cbtn on" onclick="s4(this,'flex-start')">flex-start</button>
+        <button class="cbtn" onclick="s4(this,'center')">center</button>
+        <button class="cbtn" onclick="s4(this,'flex-end')">flex-end</button>
+        <button class="cbtn" onclick="s4(this,'stretch')">stretch</button>
+        <button class="cbtn" onclick="s4(this,'baseline')">baseline</button>
+      </div>
+    </div>
+  </div>
+  <div class="demo-area" style="min-height:120px;">
+    <div id="d04" style="display:flex;align-items:flex-start;gap:8px;height:110px;">
+      <div class="cell c1" id="ai1" style="width:52px;height:44px;">A</div>
+      <div class="cell c2" id="ai2" style="width:52px;height:66px;">B</div>
+      <div class="cell c3" id="ai3" style="width:52px;height:54px;">C</div>
+      <div class="cell c4" id="ai4" style="width:52px;height:78px;">D</div>
+      <div class="cell c5" id="ai5" style="width:52px;height:50px;">E</div>
+    </div>
+  </div>
+  <div class="code-block"><span class="kw">.container</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">align-items</span>: <span id="c04" class="live">flex-start</span>;
+}</div>
+</div>
+<hr class="divider">
+
+<!-- 05 · flex-wrap -->
+<div class="section-block">
+  <div class="section-num">05 / 09</div>
+  <div class="section-title">flex-wrap</div>
+  <div class="section-desc">By default flex fits everything in one line, squishing items. <code>wrap</code> lets items spill to the next row when there's no room.</div>
+  <div class="real-world"><strong>🏫 School analogy:</strong> Students filling seats in a classroom row — when one row is full they move to the next row. <code>nowrap</code> forces everyone into one row regardless.</div>
+  <div class="controls-bar">
+    <div class="ctrl-group"><label>flex-wrap:</label>
+      <div class="btn-group">
+        <button class="cbtn on" onclick="s5(this,'nowrap')">nowrap</button>
+        <button class="cbtn" onclick="s5(this,'wrap')">wrap</button>
+        <button class="cbtn" onclick="s5(this,'wrap-reverse')">wrap-reverse</button>
+      </div>
+    </div>
+  </div>
+  <div class="demo-area" style="overflow-x:auto;">
+    <div id="d05" style="display:flex;flex-wrap:nowrap;gap:8px;">
+      <div class="cell c1 sz">A</div>
+      <div class="cell c2 sz">B</div>
+      <div class="cell c3 sz">C</div>
+      <div class="cell c4 sz">D</div>
+      <div class="cell c5 sz">E</div>
+      <div class="cell c6 sz" style="opacity:.7;">F</div>
+      <div class="cell c7 sz" style="opacity:.7;">G</div>
+      <div class="cell c8 sz" style="opacity:.7;">H</div>
+    </div>
+  </div>
+  <div class="code-block"><span class="kw">.container</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-wrap</span>: <span id="c05" class="live">nowrap</span>;
+}</div>
+</div>
+<hr class="divider">
+
+<!-- 06 · gap -->
+<div class="section-block">
+  <div class="section-num">06 / 09</div>
+  <div class="section-title">gap</div>
+  <div class="section-desc">The clean way to add space between flex children. No margins, no math, no margin-collapse issues.</div>
+  <div class="real-world"><strong>🏫 School analogy:</strong> The aisle space between rows of desks. <code>gap</code> sets it uniformly — you set it once on the container, not on every single desk.</div>
+  <div class="controls-bar">
+    <div class="ctrl-group"><label>gap:</label>
+      <input type="range" min="0" max="40" value="8" oninput="s6(this.value)">
+      <span class="rv" id="rv06">8px</span>
+    </div>
+  </div>
+  <div class="demo-area">
+    <div id="d06" style="display:flex;gap:8px;">
+      <div class="cell c1 sz">A</div>
+      <div class="cell c2 sz">B</div>
+      <div class="cell c3 sz">C</div>
+      <div class="cell c4 sz">D</div>
+    </div>
+  </div>
+  <div class="code-block"><span class="kw">.container</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">gap</span>: <span id="c06" class="live">8px</span>;
+}</div>
+</div>
+<hr class="divider">
+
+<!-- 07 · flex-grow -->
+<div class="section-block">
+  <div class="section-num">07 / 09</div>
+  <div class="section-title">flex-grow</div>
+  <div class="section-desc">Tells an item how much leftover space to absorb. Cell C (outlined) is the one being changed. Higher number = takes more space relative to others.</div>
+  <div class="real-world"><strong>🏫 School analogy:</strong> The main notice board gets <code>flex-grow:2</code> and takes twice the wall space compared to the smaller boards on each side.</div>
+  <div class="controls-bar">
+    <div class="ctrl-group"><label>Cell C flex-grow:</label>
+      <div class="btn-group">
+        <button class="cbtn on" onclick="s7(this,0)">0</button>
+        <button class="cbtn" onclick="s7(this,1)">1</button>
+        <button class="cbtn" onclick="s7(this,2)">2</button>
+        <button class="cbtn" onclick="s7(this,4)">4</button>
+      </div>
+    </div>
+  </div>
+  <div class="demo-area">
+    <div id="d07" style="display:flex;gap:8px;">
+      <div class="cell c1 sz">A</div>
+      <div class="cell c2 sz">B</div>
+      <div class="cell c3 sz cell-focus" id="grow-box" style="flex-grow:0;transition:all .3s;">C</div>
+      <div class="cell c4 sz">D</div>
+    </div>
+  </div>
+  <div class="code-block"><span class="cmt">/* cell C (the outlined one) */</span>
+<span class="kw">.cell-c</span> {
+  <span class="prop">flex-grow</span>: <span id="c07" class="live">0</span>;
+}</div>
+</div>
+<hr class="divider">
+
+<!-- 08 · align-self -->
+<div class="section-block">
+  <div class="section-num">08 / 09</div>
+  <div class="section-title">align-self</div>
+  <div class="section-desc">Overrides <code>align-items</code> for <strong>one specific child</strong>. The container is set to <code>align-items: flex-start</code>. Cell C (outlined) overrides it independently.</div>
+  <div class="real-world"><strong>🏫 School analogy:</strong> In a row of lockers all aligned to the top, one special locker stretches to the floor independently — the others don't move.</div>
+  <div class="controls-bar">
+    <div class="ctrl-group"><label>Cell C align-self:</label>
+      <div class="btn-group">
+        <button class="cbtn on" onclick="s8(this,'flex-start')">flex-start</button>
+        <button class="cbtn" onclick="s8(this,'center')">center</button>
+        <button class="cbtn" onclick="s8(this,'flex-end')">flex-end</button>
+        <button class="cbtn" onclick="s8(this,'stretch')">stretch</button>
+      </div>
+    </div>
+  </div>
+  <div class="demo-area" style="min-height:130px;">
+    <div id="d08" style="display:flex;align-items:flex-start;gap:8px;height:120px;">
+      <div class="cell c1" style="width:52px;height:52px;">A</div>
+      <div class="cell c2" style="width:52px;height:52px;">B</div>
+      <div class="cell c3 cell-focus" id="as-box" style="width:52px;height:52px;align-self:flex-start;transition:all .3s;">C</div>
+      <div class="cell c4" style="width:52px;height:52px;">D</div>
+    </div>
+  </div>
+  <div class="code-block"><span class="kw">.container</span> { <span class="prop">align-items</span>: <span class="val">flex-start</span>; }
+<span class="cmt">/* override for cell C only: */</span>
+<span class="kw">.cell-c</span> {
+  <span class="prop">align-self</span>: <span id="c08" class="live">flex-start</span>;
+}</div>
+</div>
+<hr class="divider">
+
+<!-- 09 · order -->
+<div class="section-block">
+  <div class="section-num">09 / 09</div>
+  <div class="section-title">order</div>
+  <div class="section-desc">Changes the visual order without touching HTML. Default is 0 for all. Lower number = appears first. Negative values push an item before everything else.</div>
+  <div class="real-world"><strong>🏫 School analogy:</strong> The teacher changes the seating chart visually without physically moving any desks — only the <em>visual order</em> changes, not the actual HTML structure.</div>
+  <div class="controls-bar">
+    <div class="ctrl-group"><label>Cell A order:</label>
+      <div class="btn-group">
+        <button class="cbtn on" onclick="s9(this,0)">0 (default)</button>
+        <button class="cbtn" onclick="s9(this,1)">1</button>
+        <button class="cbtn" onclick="s9(this,2)">2</button>
+        <button class="cbtn" onclick="s9(this,3)">3 (last)</button>
+        <button class="cbtn" onclick="s9(this,-1)">-1 (first)</button>
+      </div>
+    </div>
+  </div>
+  <div class="demo-area">
+    <div id="d09" style="display:flex;gap:8px;">
+      <div class="cell c1 sz cell-focus" id="ord-box" style="order:0;transition:all .3s;">A</div>
+      <div class="cell c2 sz" style="order:0;">B</div>
+      <div class="cell c3 sz" style="order:0;">C</div>
+      <div class="cell c4 sz" style="order:0;">D</div>
+    </div>
+  </div>
+  <div class="code-block"><span class="cmt">/* HTML order: A, B, C, D */</span>
+<span class="kw">.cell-a</span> {
+  <span class="prop">order</span>: <span id="c09" class="live">0</span>;
+}</div>
+</div>
+<hr class="divider">
+
+<!-- 10 · Master Playground -->
+<div class="section-block">
+  <div class="section-num">10 / 11</div>
+  <div class="section-title">Master Playground</div>
+  <div class="section-desc">Combine all container properties and see how they interact live.</div>
+  <div class="controls-bar" id="master-bar" style="flex-direction:column;align-items:flex-start;gap:14px;">
+    <div style="display:flex;flex-wrap:wrap;gap:10px;width:100%;">
+      <div class="ctrl-group" style="flex-direction:column;align-items:flex-start;gap:4px;">
+        <label>flex-direction</label>
+        <select onchange="updateMaster()"><option>row</option><option>row-reverse</option><option>column</option><option>column-reverse</option></select>
+      </div>
+      <div class="ctrl-group" style="flex-direction:column;align-items:flex-start;gap:4px;">
+        <label>justify-content</label>
+        <select onchange="updateMaster()"><option>flex-start</option><option>center</option><option>flex-end</option><option>space-between</option><option>space-around</option><option>space-evenly</option></select>
+      </div>
+      <div class="ctrl-group" style="flex-direction:column;align-items:flex-start;gap:4px;">
+        <label>align-items</label>
+        <select onchange="updateMaster()"><option>flex-start</option><option>center</option><option>flex-end</option><option>stretch</option><option>baseline</option></select>
+      </div>
+      <div class="ctrl-group" style="flex-direction:column;align-items:flex-start;gap:4px;">
+        <label>flex-wrap</label>
+        <select onchange="updateMaster()"><option>nowrap</option><option>wrap</option><option>wrap-reverse</option></select>
+      </div>
+      <div class="ctrl-group" style="flex-direction:column;align-items:flex-start;gap:4px;">
+        <label>gap</label>
+        <select onchange="updateMaster()"><option>0px</option><option selected>8px</option><option>16px</option><option>24px</option></select>
+      </div>
+    </div>
+  </div>
+  <div class="demo-area" style="min-height:140px;">
+    <div id="master-demo" style="display:flex;flex-direction:row;justify-content:flex-start;align-items:flex-start;flex-wrap:nowrap;gap:8px;min-height:110px;">
+      <div class="cell c1 sz">A</div>
+      <div class="cell c2" style="width:52px;height:72px;">B</div>
+      <div class="cell c3" style="width:52px;height:48px;">C</div>
+      <div class="cell c4" style="width:52px;height:88px;">D</div>
+      <div class="cell c5 sz">E</div>
+    </div>
+  </div>
+  <div class="code-block"><span class="kw">.container</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-direction</span>: <span class="live" id="mc-fd">row</span>;
+  <span class="prop">justify-content</span>: <span class="live" id="mc-jc">flex-start</span>;
+  <span class="prop">align-items</span>: <span class="live" id="mc-ai">flex-start</span>;
+  <span class="prop">flex-wrap</span>: <span class="live" id="mc-fw">nowrap</span>;
+  <span class="prop">gap</span>: <span class="live" id="mc-gap">8px</span>;
+}</div>
+</div>
+<hr class="divider">
+
+<!-- 11 · Combinations -->
+<div class="section-block">
+  <div class="section-num">11 / 11</div>
+  <div class="section-title">Combination Guide</div>
+  <div class="section-desc">The most-used property combinations in real websites. Copy them directly into your projects.</div>
+  <div class="combo-grid">
+    <div class="combo-card">
+      <div class="combo-name">Horizontal Nav Bar <span class="combo-tag">navbar</span></div>
+      <div class="combo-use">Logo on the left, links pushed to the right. The most common navbar pattern.</div>
+      <div class="combo-code"><span class="p">display</span>: <span class="v">flex</span>;<br><span class="p">justify-content</span>: <span class="v">space-between</span>;<br><span class="p">align-items</span>: <span class="v">center</span>;<br><span class="p">gap</span>: <span class="v">16px</span>;</div>
+    </div>
+    <div class="combo-card">
+      <div class="combo-name">Perfect Center <span class="combo-tag">hero / modal</span></div>
+      <div class="combo-use">Centers anything — a login card, a modal, a hero message — both vertically and horizontally.</div>
+      <div class="combo-code"><span class="p">display</span>: <span class="v">flex</span>;<br><span class="p">justify-content</span>: <span class="v">center</span>;<br><span class="p">align-items</span>: <span class="v">center</span>;<br><span class="p">min-height</span>: <span class="v">100vh</span>;</div>
+    </div>
+    <div class="combo-card">
+      <div class="combo-name">Card Row with Wrap <span class="combo-tag">product grid</span></div>
+      <div class="combo-use">Cards sit side-by-side and wrap to the next row on smaller screens.</div>
+      <div class="combo-code"><span class="p">display</span>: <span class="v">flex</span>;<br><span class="p">flex-wrap</span>: <span class="v">wrap</span>;<br><span class="p">gap</span>: <span class="v">20px</span>;<br><span class="p">justify-content</span>: <span class="v">flex-start</span>;</div>
+    </div>
+    <div class="combo-card">
+      <div class="combo-name">Sidebar + Content <span class="combo-tag">dashboard</span></div>
+      <div class="combo-use">Fixed-width sidebar, main content fills remaining width using flex-grow.</div>
+      <div class="combo-code"><span class="p">display</span>: <span class="v">flex</span>;<br><span style="color:#64748b">/* sidebar: */</span><br><span class="p">width</span>: <span class="v">240px</span>; <span class="p">flex-shrink</span>: <span class="v">0</span>;<br><span style="color:#64748b">/* main: */</span><br><span class="p">flex-grow</span>: <span class="v">1</span>;</div>
+    </div>
+    <div class="combo-card">
+      <div class="combo-name">Icon + Text Row <span class="combo-tag">list items</span></div>
+      <div class="combo-use">An icon sits next to text. The text block wraps without affecting the icon.</div>
+      <div class="combo-code"><span class="p">display</span>: <span class="v">flex</span>;<br><span class="p">align-items</span>: <span class="v">flex-start</span>;<br><span class="p">gap</span>: <span class="v">12px</span>;<br><span style="color:#64748b">/* icon: */</span><br><span class="p">flex-shrink</span>: <span class="v">0</span>;</div>
+    </div>
+    <div class="combo-card">
+      <div class="combo-name">Stretchy Search Bar <span class="combo-tag">toolbar</span></div>
+      <div class="combo-use">Logo and buttons stay natural size; the search input grows to fill available space.</div>
+      <div class="combo-code"><span class="p">display</span>: <span class="v">flex</span>;<br><span class="p">align-items</span>: <span class="v">center</span>;<br><span class="p">gap</span>: <span class="v">10px</span>;<br><span style="color:#64748b">/* search input: */</span><br><span class="p">flex-grow</span>: <span class="v">1</span>;</div>
+    </div>
+    <div class="combo-card">
+      <div class="combo-name">Evenly Spaced Tabs <span class="combo-tag">bottom nav</span></div>
+      <div class="combo-use">Tab items each take equal width across the full container. Common in mobile bottom bars.</div>
+      <div class="combo-code"><span class="p">display</span>: <span class="v">flex</span>;<br><span class="p">justify-content</span>: <span class="v">space-evenly</span>;<br><span class="p">align-items</span>: <span class="v">center</span>;<br><span style="color:#64748b">/* each tab: */</span><br><span class="p">flex</span>: <span class="v">1</span>;</div>
+    </div>
+    <div class="combo-card">
+      <div class="combo-name">Footer Three Columns <span class="combo-tag">footer</span></div>
+      <div class="combo-use">Three sections spaced across the footer. Add flex-wrap:wrap to stack on mobile.</div>
+      <div class="combo-code"><span class="p">display</span>: <span class="v">flex</span>;<br><span class="p">justify-content</span>: <span class="v">space-between</span>;<br><span class="p">align-items</span>: <span class="v">flex-start</span>;<br><span class="p">flex-wrap</span>: <span class="v">wrap</span>;<br><span class="p">gap</span>: <span class="v">32px</span>;</div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:10px;font-size:.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Quick Reference</div>
+  <div class="cheat-strip">
+    <div class="cs-card">
+      <div class="cs-prop">justify-content</div>
+      <div class="cs-row"><span class="cs-v">flex-start</span><span class="cs-d">Pack left</span></div>
+      <div class="cs-row"><span class="cs-v">center</span><span class="cs-d">Center</span></div>
+      <div class="cs-row"><span class="cs-v">flex-end</span><span class="cs-d">Pack right</span></div>
+      <div class="cs-row"><span class="cs-v">space-between</span><span class="cs-d">Edges + middle</span></div>
+      <div class="cs-row"><span class="cs-v">space-evenly</span><span class="cs-d">All gaps equal</span></div>
+    </div>
+    <div class="cs-card">
+      <div class="cs-prop">align-items</div>
+      <div class="cs-row"><span class="cs-v">flex-start</span><span class="cs-d">Stick to top</span></div>
+      <div class="cs-row"><span class="cs-v">center</span><span class="cs-d">Vertical middle</span></div>
+      <div class="cs-row"><span class="cs-v">flex-end</span><span class="cs-d">Stick to bottom</span></div>
+      <div class="cs-row"><span class="cs-v">stretch</span><span class="cs-d">Fill height</span></div>
+      <div class="cs-row"><span class="cs-v">baseline</span><span class="cs-d">Align text</span></div>
+    </div>
+    <div class="cs-card">
+      <div class="cs-prop">flex-direction</div>
+      <div class="cs-row"><span class="cs-v">row</span><span class="cs-d">Left → right</span></div>
+      <div class="cs-row"><span class="cs-v">row-reverse</span><span class="cs-d">Right → left</span></div>
+      <div class="cs-row"><span class="cs-v">column</span><span class="cs-d">Top → bottom</span></div>
+      <div class="cs-row"><span class="cs-v">column-reverse</span><span class="cs-d">Bottom → top</span></div>
+    </div>
+    <div class="cs-card">
+      <div class="cs-prop">flex-wrap</div>
+      <div class="cs-row"><span class="cs-v">nowrap</span><span class="cs-d">One line</span></div>
+      <div class="cs-row"><span class="cs-v">wrap</span><span class="cs-d">Spill to next row</span></div>
+      <div class="cs-row"><span class="cs-v">wrap-reverse</span><span class="cs-d">Wrap upward</span></div>
+    </div>
+    <div class="cs-card">
+      <div class="cs-prop">flex-grow / shrink</div>
+      <div class="cs-row"><span class="cs-v">flex-grow: 0</span><span class="cs-d">Natural size</span></div>
+      <div class="cs-row"><span class="cs-v">flex-grow: 1</span><span class="cs-d">Fill space</span></div>
+      <div class="cs-row"><span class="cs-v">flex-shrink: 0</span><span class="cs-d">Never shrink</span></div>
+      <div class="cs-row"><span class="cs-v">flex: 1</span><span class="cs-d">Grow + shrink</span></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+<script>
+function toggleTheme(){
+  const r=document.documentElement;
+  r.setAttribute('data-theme',r.getAttribute('data-theme')==='dark'?'light':'dark');
+}
+function pick(btn){
+  btn.closest('.btn-group').querySelectorAll('.cbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+function s1(btn,v){pick(btn);const d=document.getElementById('d01');d.style.display=v;d.style.gap=v==='flex'?'8px':'';document.getElementById('c01').textContent=v;}
+function s2(btn,v){pick(btn);document.getElementById('d02').style.flexDirection=v;document.getElementById('c02').textContent=v;}
+function s3(btn,v){pick(btn);document.getElementById('d03').style.justifyContent=v;document.getElementById('c03').textContent=v;}
+const aiH=['44px','66px','54px','78px','50px'];
+function s4(btn,v){
+  pick(btn);const d=document.getElementById('d04');d.style.alignItems=v;
+  const boxes=[...d.querySelectorAll('.cell')];
+  if(v==='stretch'){boxes.forEach(b=>b.style.height='');}
+  else{boxes.forEach((b,i)=>b.style.height=aiH[i]);}
+  document.getElementById('c04').textContent=v;
+}
+function s5(btn,v){pick(btn);document.getElementById('d05').style.flexWrap=v;document.getElementById('c05').textContent=v;}
+function s6(v){document.getElementById('d06').style.gap=v+'px';document.getElementById('rv06').textContent=v+'px';document.getElementById('c06').textContent=v+'px';}
+function s7(btn,v){pick(btn);document.getElementById('grow-box').style.flexGrow=v;document.getElementById('c07').textContent=v;}
+function s8(btn,v){pick(btn);const b=document.getElementById('as-box');b.style.alignSelf=v;b.style.height=v==='stretch'?'':'52px';document.getElementById('c08').textContent=v;}
+function s9(btn,v){pick(btn);document.getElementById('ord-box').style.order=v;document.getElementById('c09').textContent=v;}
+function updateMaster(){
+  const s=[...document.querySelectorAll('#master-bar select')].map(x=>x.value);
+  const d=document.getElementById('master-demo');
+  d.style.flexDirection=s[0];d.style.justifyContent=s[1];d.style.alignItems=s[2];d.style.flexWrap=s[3];d.style.gap=s[4];
+  document.getElementById('mc-fd').textContent=s[0];document.getElementById('mc-jc').textContent=s[1];
+  document.getElementById('mc-ai').textContent=s[2];document.getElementById('mc-fw').textContent=s[3];document.getElementById('mc-gap').textContent=s[4];
+}
+</script>
+<p>Created by Rishop Babu</p>
+</body></html>

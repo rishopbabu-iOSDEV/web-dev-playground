@@ -1,0 +1,1242 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>HTML Tags & Attributes — Modules 1–4</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap">
+<style>
+/* ── Tokens ──────────────────────────────────────────── */
+:root {
+  --bg: #f0f4f8; --surface: #ffffff; --surface2: #f8fafc;
+  --fg: #0f172a; --muted: #64748b; --border: #e2e8f0;
+  --accent: #4f46e5; --accent-bg: #eef2ff; --accent-mid: #a5b4fc;
+  --m1: #0284c7; --m1-bg: #e0f2fe; /* Module 1 — blue */
+  --m2: #059669; --m2-bg: #dcfce7; /* Module 2 — green */
+  --m3: #7c3aed; --m3-bg: #ede9fe; /* Module 3 — purple */
+  --m4: #ea580c; --m4-bg: #ffedd5; /* Module 4 — orange */
+  --code-bg: #0f172a; --code-fg: #e2e8f0;
+  --shadow: 0 2px 8px rgba(0,0,0,0.07);
+  --radius: 10px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f172a; --surface: #1e293b; --surface2: #263348;
+    --fg: #f1f5f9; --muted: #94a3b8; --border: #334155;
+    --accent: #818cf8; --accent-bg: #1e1b4b; --accent-mid: #4338ca;
+    --m1: #38bdf8; --m1-bg: #0c2a3f;
+    --m2: #34d399; --m2-bg: #0a2d24;
+    --m3: #a78bfa; --m3-bg: #1e1536;
+    --m4: #fb923c; --m4-bg: #3a1a04;
+    --code-bg: #020617; --code-fg: #e2e8f0;
+    --shadow: 0 2px 8px rgba(0,0,0,0.3);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f172a; --surface: #1e293b; --surface2: #263348;
+  --fg: #f1f5f9; --muted: #94a3b8; --border: #334155;
+  --accent: #818cf8; --accent-bg: #1e1b4b; --accent-mid: #4338ca;
+  --m1: #38bdf8; --m1-bg: #0c2a3f;
+  --m2: #34d399; --m2-bg: #0a2d24;
+  --m3: #a78bfa; --m3-bg: #1e1536;
+  --m4: #fb923c; --m4-bg: #3a1a04;
+  --code-bg: #020617; --code-fg: #e2e8f0;
+  --shadow: 0 2px 8px rgba(0,0,0,0.3);
+  color-scheme: dark;
+}
+
+/* ── Reset & Base ───────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 0 16px;
+  padding-block: 0 40px;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+img { max-width: 100%; }
+
+/* ── Header ─────────────────────────────────────────── */
+.site-header {
+  background: #0f172a;
+  color: #f1f5f9;
+  padding: 28px 24px 24px;
+  margin: 0 -16px 32px;
+}
+.site-header h1 {
+  margin: 0 0 6px;
+  font-size: clamp(1.3rem, 3vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.site-header p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+.module-pills {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-top: 14px;
+}
+.mpill {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+.mpill.m1 { background: #0284c7; color: #fff; }
+.mpill.m2 { background: #059669; color: #fff; }
+.mpill.m3 { background: #7c3aed; color: #fff; }
+.mpill.m4 { background: #ea580c; color: #fff; }
+
+/* ── Controls bar ───────────────────────────────────── */
+.controls {
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  margin-bottom: 24px;
+}
+.filters { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
+.filter-btn {
+  padding: 6px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--muted);
+  font: 600 0.8rem 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+.filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.count-chip {
+  background: var(--accent-bg);
+  color: var(--accent);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font: 600 0.8rem 'Inter', sans-serif;
+  white-space: nowrap;
+}
+.theme-btn {
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── Section header ─────────────────────────────────── */
+.section-header {
+  display: flex; align-items: center; gap: 10px;
+  margin: 32px 0 16px;
+}
+.section-header h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── Tag grid ───────────────────────────────────────── */
+.tag-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+/* ── Tag card ───────────────────────────────────────── */
+.tag-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  display: flex; flex-direction: column;
+}
+.tag-card[hidden] { display: none; }
+
+.card-top {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 8px;
+  padding: 14px 16px 10px;
+}
+.tag-name {
+  font-family: 'Fira Code', monospace;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--accent);
+  word-break: break-all;
+}
+.module-badge {
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.badge-m1 { background: var(--m1-bg); color: var(--m1); }
+.badge-m2 { background: var(--m2-bg); color: var(--m2); }
+.badge-m3 { background: var(--m3-bg); color: var(--m3); }
+.badge-m4 { background: var(--m4-bg); color: var(--m4); }
+
+.card-desc {
+  padding: 0 16px 10px;
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+.card-desc strong { color: var(--fg); }
+
+/* Attributes table */
+.attrs-block {
+  margin: 0 16px 12px;
+}
+.attrs-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.attr-row {
+  display: flex; gap: 8px;
+  padding: 5px 0;
+  border-top: 1px solid var(--border);
+  font-size: 0.82rem;
+  align-items: baseline;
+  min-width: 0;
+}
+.attr-name {
+  font-family: 'Fira Code', monospace;
+  color: var(--accent);
+  flex-shrink: 0;
+  font-size: 0.8rem;
+}
+.attr-desc { color: var(--muted); min-width: 0; }
+
+/* Usage tip */
+.usage-tip {
+  margin: 0 16px 12px;
+  padding: 8px 10px;
+  background: var(--surface2);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.usage-tip .tip-label {
+  font-weight: 700;
+  color: var(--accent);
+  margin-right: 4px;
+}
+
+/* Code block */
+.code-block {
+  margin-top: auto;
+  background: var(--code-bg);
+  padding: 12px 14px;
+  overflow-x: auto;
+}
+.code-block pre {
+  margin: 0;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--code-fg);
+  white-space: pre;
+  tab-size: 2;
+}
+.kw  { color: #93c5fd; }  /* tag name */
+.att { color: #86efac; }  /* attribute name */
+.val { color: #fca5a5; }  /* attribute value */
+.cm  { color: #64748b; font-style: italic; }  /* comment */
+.tx  { color: #fde68a; }  /* text content */
+
+/* ── Section groups ─────────────────────────────────── */
+.section-group[hidden] { display: none; }
+
+/* ── Responsive ─────────────────────────────────────── */
+@media (max-width: 600px) {
+  .tag-grid { grid-template-columns: 1fr; }
+  .site-header { padding: 20px 16px 18px; }
+}
+</style>
+
+<!-- Header -->
+<header class="site-header">
+  <h1>HTML Tags &amp; Attributes — Complete Reference</h1>
+  <p>All tags and attributes from Modules 1–4 · with examples and when-to-use guidance</p>
+  <div class="module-pills">
+    <span class="mpill m1">Module 1 · HTML Basics</span>
+    <span class="mpill m2">Module 2 · Links &amp; Images</span>
+    <span class="mpill m3">Module 3 · Tables &amp; Forms</span>
+    <span class="mpill m4">Module 4 · Media &amp; Accessibility</span>
+  </div>
+</header>
+
+<!-- Controls -->
+<div class="controls">
+  <div class="filters">
+    <button class="filter-btn active" data-cat="all">All</button>
+    <button class="filter-btn" data-cat="document">Document</button>
+    <button class="filter-btn" data-cat="text">Text &amp; Lists</button>
+    <button class="filter-btn" data-cat="links">Links</button>
+    <button class="filter-btn" data-cat="images">Images</button>
+    <button class="filter-btn" data-cat="layout">Semantic Layout</button>
+    <button class="filter-btn" data-cat="tables">Tables</button>
+    <button class="filter-btn" data-cat="forms">Forms</button>
+    <button class="filter-btn" data-cat="media">Media</button>
+  </div>
+  <span class="count-chip" id="count-chip">— tags</span>
+  <button class="theme-btn" id="theme-toggle" title="Toggle theme">🌙</button>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     SECTION: DOCUMENT STRUCTURE
+═══════════════════════════════════════════════════════ -->
+<div class="section-group" data-section="document">
+  <div class="section-header">
+    <h2>Document Structure</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="tag-grid">
+
+    <!-- DOCTYPE -->
+    <div class="tag-card" data-cat="document">
+      <div class="card-top">
+        <span class="tag-name">&lt;!DOCTYPE html&gt;</span>
+        <span class="module-badge badge-m1">M1</span>
+      </div>
+      <div class="card-desc">
+        The <strong>document type declaration</strong>. Always the very first line of every HTML file. Tells the browser this is modern HTML5 — not older HTML or XHTML. <strong>Not a tag</strong> — it's an instruction.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Always. Line 1 of every .html file. Never omit it.</div>
+      <div class="code-block"><pre><span class="kw">&lt;!DOCTYPE html&gt;</span>
+<span class="cm">&lt;!-- Required. One per file, line 1. --&gt;</span></pre></div>
+    </div>
+
+    <!-- html -->
+    <div class="tag-card" data-cat="document">
+      <div class="card-top">
+        <span class="tag-name">&lt;html&gt;</span>
+        <span class="module-badge badge-m1">M1</span>
+      </div>
+      <div class="card-desc">
+        The <strong>root element</strong> — wraps absolutely everything else on the page. The <code>lang</code> attribute tells browsers and screen readers what language the page is in.
+      </div>
+      <div class="attrs-block">
+        <div class="attrs-label">Key Attribute</div>
+        <div class="attr-row"><span class="attr-name">lang</span><span class="attr-desc">Language code, e.g. <code>"en"</code>. Used by screen readers and search engines.</span></div>
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Wraps the entire file — right after <code>&lt;!DOCTYPE&gt;</code>. One per page.</div>
+      <div class="code-block"><pre><span class="kw">&lt;html</span> <span class="att">lang</span>=<span class="val">"en"</span><span class="kw">&gt;</span>
+  <span class="cm">&lt;!-- head + body go here --&gt;</span>
+<span class="kw">&lt;/html&gt;</span></pre></div>
+    </div>
+
+    <!-- head -->
+    <div class="tag-card" data-cat="document">
+      <div class="card-top">
+        <span class="tag-name">&lt;head&gt;</span>
+        <span class="module-badge badge-m1">M1</span>
+      </div>
+      <div class="card-desc">
+        The <strong>metadata container</strong>. Everything inside <code>&lt;head&gt;</code> is invisible to visitors — it holds information <em>about</em> the page: character encoding, title, linked stylesheets, etc.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Always the first child of <code>&lt;html&gt;</code>. Contains <code>&lt;meta&gt;</code>, <code>&lt;title&gt;</code>, <code>&lt;style&gt;</code>, <code>&lt;link&gt;</code>.</div>
+      <div class="code-block"><pre><span class="kw">&lt;head&gt;</span>
+  <span class="kw">&lt;meta</span> <span class="att">charset</span>=<span class="val">"UTF-8"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;title&gt;</span><span class="tx">Page Title</span><span class="kw">&lt;/title&gt;</span>
+<span class="kw">&lt;/head&gt;</span></pre></div>
+    </div>
+
+    <!-- meta -->
+    <div class="tag-card" data-cat="document">
+      <div class="card-top">
+        <span class="tag-name">&lt;meta&gt;</span>
+        <span class="module-badge badge-m1">M1</span>
+      </div>
+      <div class="card-desc">
+        A <strong>self-closing metadata tag</strong>. The most important use is <code>charset="UTF-8"</code> — without it, special characters (accents, emojis) may break. Also used for viewport, description, and more.
+      </div>
+      <div class="attrs-block">
+        <div class="attrs-label">Common Attributes</div>
+        <div class="attr-row"><span class="attr-name">charset</span><span class="attr-desc"><code>"UTF-8"</code> — always include this one</span></div>
+        <div class="attr-row"><span class="attr-name">name / content</span><span class="attr-desc">Paired for viewport, description, author, etc.</span></div>
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Inside <code>&lt;head&gt;</code>. At minimum: <code>&lt;meta charset="UTF-8"&gt;</code>.</div>
+      <div class="code-block"><pre><span class="kw">&lt;meta</span> <span class="att">charset</span>=<span class="val">"UTF-8"</span><span class="kw">&gt;</span>
+<span class="kw">&lt;meta</span> <span class="att">name</span>=<span class="val">"viewport"</span>
+      <span class="att">content</span>=<span class="val">"width=device-width"</span><span class="kw">&gt;</span></pre></div>
+    </div>
+
+    <!-- title -->
+    <div class="tag-card" data-cat="document">
+      <div class="card-top">
+        <span class="tag-name">&lt;title&gt;</span>
+        <span class="module-badge badge-m1">M1</span>
+      </div>
+      <div class="card-desc">
+        Sets the <strong>browser tab text</strong> and is what search engines show as the clickable headline in results. The only visible use of the <code>&lt;head&gt;</code> section.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> One per page, inside <code>&lt;head&gt;</code>. Best format: <code>"Page | Site Name"</code>.</div>
+      <div class="code-block"><pre><span class="kw">&lt;title&gt;</span><span class="tx">Ada Lovelace | Portfolio</span><span class="kw">&lt;/title&gt;</span>
+<span class="cm">&lt;!-- Shows in browser tab + search results --&gt;</span></pre></div>
+    </div>
+
+    <!-- body -->
+    <div class="tag-card" data-cat="document">
+      <div class="card-top">
+        <span class="tag-name">&lt;body&gt;</span>
+        <span class="module-badge badge-m1">M1</span>
+      </div>
+      <div class="card-desc">
+        The <strong>visible content container</strong>. Everything a visitor sees on the page — text, images, links, forms — lives inside <code>&lt;body&gt;</code>. Sibling to <code>&lt;head&gt;</code>, child of <code>&lt;html&gt;</code>.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Always. Contains all visible page content. One per page.</div>
+      <div class="code-block"><pre><span class="kw">&lt;body&gt;</span>
+  <span class="kw">&lt;header&gt;</span><span class="tx">…</span><span class="kw">&lt;/header&gt;</span>
+  <span class="kw">&lt;main&gt;</span><span class="tx">…</span><span class="kw">&lt;/main&gt;</span>
+  <span class="kw">&lt;footer&gt;</span><span class="tx">…</span><span class="kw">&lt;/footer&gt;</span>
+<span class="kw">&lt;/body&gt;</span></pre></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     SECTION: TEXT & LISTS
+═══════════════════════════════════════════════════════ -->
+<div class="section-group" data-section="text">
+  <div class="section-header">
+    <h2>Text &amp; Lists</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="tag-grid">
+
+    <!-- h1-h6 -->
+    <div class="tag-card" data-cat="text">
+      <div class="card-top">
+        <span class="tag-name">&lt;h1&gt; – &lt;h6&gt;</span>
+        <span class="module-badge badge-m1">M1</span>
+      </div>
+      <div class="card-desc">
+        <strong>Heading tags</strong>. Describe <em>structure</em>, not size. <code>&lt;h1&gt;</code> is the single most important heading (your name on a portfolio). <code>&lt;h2&gt;</code> for sections, <code>&lt;h3&gt;</code> for sub-sections. Never skip levels.
+      </div>
+      <div class="usage-tip"><span class="tip-label">Rule:</span> Exactly <strong>one</strong> <code>&lt;h1&gt;</code> per page. Use CSS to change size, not different heading levels.</div>
+      <div class="code-block"><pre><span class="kw">&lt;h1&gt;</span><span class="tx">Ada Lovelace</span><span class="kw">&lt;/h1&gt;</span>
+<span class="kw">&lt;h2&gt;</span><span class="tx">About Me</span><span class="kw">&lt;/h2&gt;</span>
+<span class="kw">&lt;h3&gt;</span><span class="tx">My Interests</span><span class="kw">&lt;/h3&gt;</span>
+<span class="cm">&lt;!-- h4, h5, h6 for deeper sub-sections --&gt;</span></pre></div>
+    </div>
+
+    <!-- p -->
+    <div class="tag-card" data-cat="text">
+      <div class="card-top">
+        <span class="tag-name">&lt;p&gt;</span>
+        <span class="module-badge badge-m1">M1</span>
+      </div>
+      <div class="card-desc">
+        A <strong>paragraph</strong>. The browser adds space above and below automatically. Use for any block of running text — about sections, descriptions, bios.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Any prose block. Don't use <code>&lt;br&gt;</code> between lines to fake paragraphs — use separate <code>&lt;p&gt;</code> tags.</div>
+      <div class="code-block"><pre><span class="kw">&lt;p&gt;</span><span class="tx">Hi, I'm Ada — an aspiring developer
+learning to build for the web.</span><span class="kw">&lt;/p&gt;</span></pre></div>
+    </div>
+
+    <!-- strong -->
+    <div class="tag-card" data-cat="text">
+      <div class="card-top">
+        <span class="tag-name">&lt;strong&gt;</span>
+        <span class="module-badge badge-m1">M1</span>
+      </div>
+      <div class="card-desc">
+        Marks text as <strong>important</strong> — renders bold, but the meaning is "this matters" not "make it big." Screen readers may announce it with emphasis. Use for genuinely important words, not decoration.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Key words that change meaning. Avoid using it just to make things look bigger — use CSS for that.</div>
+      <div class="code-block"><pre><span class="kw">&lt;p&gt;</span><span class="tx">Always add </span><span class="kw">&lt;strong&gt;</span><span class="tx">alt text</span><span class="kw">&lt;/strong&gt;</span><span class="tx">
+to every image.</span><span class="kw">&lt;/p&gt;</span></pre></div>
+    </div>
+
+    <!-- em -->
+    <div class="tag-card" data-cat="text">
+      <div class="card-top">
+        <span class="tag-name">&lt;em&gt;</span>
+        <span class="module-badge badge-m1">M1</span>
+      </div>
+      <div class="card-desc">
+        Marks text as <em>emphasized</em> — renders italic, but means "stress this in speech." Distinct from <code>&lt;i&gt;</code> which is purely visual italics. Screen readers change tone.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Words you'd stress out loud in speech: "I <em>never</em> skip alt text."</div>
+      <div class="code-block"><pre><span class="kw">&lt;p&gt;</span><span class="tx">This is </span><span class="kw">&lt;em&gt;</span><span class="tx">really</span><span class="kw">&lt;/em&gt;</span><span class="tx"> important.</span><span class="kw">&lt;/p&gt;</span></pre></div>
+    </div>
+
+    <!-- blockquote -->
+    <div class="tag-card" data-cat="text">
+      <div class="card-top">
+        <span class="tag-name">&lt;blockquote&gt;</span>
+        <span class="module-badge badge-m1">M1</span>
+      </div>
+      <div class="card-desc">
+        A <strong>quoted block</strong> — set apart visually from normal text, usually indented. Use for mottos, pull-quotes, or longer cited text.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Quoting someone else's words at length, or featuring a personal motto. For short inline quotes use <code>&lt;q&gt;</code>.</div>
+      <div class="code-block"><pre><span class="kw">&lt;blockquote&gt;</span>
+  <span class="kw">&lt;p&gt;</span><span class="tx">"The best way to predict the
+  future is to </span><span class="kw">&lt;strong&gt;</span><span class="tx">build</span><span class="kw">&lt;/strong&gt;</span><span class="tx"> it."</span><span class="kw">&lt;/p&gt;</span>
+<span class="kw">&lt;/blockquote&gt;</span></pre></div>
+    </div>
+
+    <!-- br -->
+    <div class="tag-card" data-cat="text">
+      <div class="card-top">
+        <span class="tag-name">&lt;br&gt;</span>
+        <span class="module-badge badge-m1">M1</span>
+      </div>
+      <div class="card-desc">
+        A <strong>line break</strong> — forces text to the next line without starting a new paragraph. Self-closing. Use sparingly — if you need a paragraph gap, use a new <code>&lt;p&gt;</code>.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Addresses, poems, where a line break is part of the content. Not for spacing between paragraphs.</div>
+      <div class="code-block"><pre><span class="kw">&lt;p&gt;</span><span class="tx">123 Main Street</span><span class="kw">&lt;br&gt;</span>
+<span class="tx">Chennai, Tamil Nadu</span><span class="kw">&lt;/p&gt;</span></pre></div>
+    </div>
+
+    <!-- hr -->
+    <div class="tag-card" data-cat="text">
+      <div class="card-top">
+        <span class="tag-name">&lt;hr&gt;</span>
+        <span class="module-badge badge-m1">M1</span>
+      </div>
+      <div class="card-desc">
+        A <strong>horizontal rule</strong> — a visual separator between sections. Self-closing. Represents a thematic break in content, not just a decorative line.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Separating major content blocks. Not for decoration — use CSS borders/dividers for that.</div>
+      <div class="code-block"><pre><span class="kw">&lt;h2&gt;</span><span class="tx">About Me</span><span class="kw">&lt;/h2&gt;</span>
+<span class="kw">&lt;p&gt;</span><span class="tx">…content…</span><span class="kw">&lt;/p&gt;</span>
+<span class="kw">&lt;hr&gt;</span>
+<span class="kw">&lt;h2&gt;</span><span class="tx">My Roadmap</span><span class="kw">&lt;/h2&gt;</span></pre></div>
+    </div>
+
+    <!-- ul -->
+    <div class="tag-card" data-cat="text">
+      <div class="card-top">
+        <span class="tag-name">&lt;ul&gt;</span>
+        <span class="module-badge badge-m1">M1</span>
+      </div>
+      <div class="card-desc">
+        An <strong>unordered (bulleted) list</strong>. Use when the items have no meaningful sequence — a skills list, a hobbies list, a features list.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Order doesn't matter. Skills, interests, features. Children must be <code>&lt;li&gt;</code> elements only.</div>
+      <div class="code-block"><pre><span class="kw">&lt;ul&gt;</span>
+  <span class="kw">&lt;li&gt;</span><span class="tx">HTML</span><span class="kw">&lt;/li&gt;</span>
+  <span class="kw">&lt;li&gt;</span><span class="tx">CSS</span><span class="kw">&lt;/li&gt;</span>
+  <span class="kw">&lt;li&gt;</span><span class="tx">Problem solving</span><span class="kw">&lt;/li&gt;</span>
+<span class="kw">&lt;/ul&gt;</span></pre></div>
+    </div>
+
+    <!-- ol -->
+    <div class="tag-card" data-cat="text">
+      <div class="card-top">
+        <span class="tag-name">&lt;ol&gt;</span>
+        <span class="module-badge badge-m1">M1</span>
+      </div>
+      <div class="card-desc">
+        An <strong>ordered (numbered) list</strong>. Use when sequence or ranking matters — steps in a process, a roadmap, a ranked list.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Order matters — instructions, steps, rankings. Same as <code>&lt;ul&gt;</code> but numbered automatically.</div>
+      <div class="code-block"><pre><span class="kw">&lt;ol&gt;</span>
+  <span class="kw">&lt;li&gt;</span><span class="tx">Learn HTML</span><span class="kw">&lt;/li&gt;</span>
+  <span class="kw">&lt;li&gt;</span><span class="tx">Learn CSS</span><span class="kw">&lt;/li&gt;</span>
+  <span class="kw">&lt;li&gt;</span><span class="tx">Build a project</span><span class="kw">&lt;/li&gt;</span>
+<span class="kw">&lt;/ol&gt;</span></pre></div>
+    </div>
+
+    <!-- li -->
+    <div class="tag-card" data-cat="text">
+      <div class="card-top">
+        <span class="tag-name">&lt;li&gt;</span>
+        <span class="module-badge badge-m1">M1</span>
+      </div>
+      <div class="card-desc">
+        A <strong>list item</strong>. Always a direct child of <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code>. Can contain text, other tags, or even a nested <code>&lt;ul&gt;</code>/<code>&lt;ol&gt;</code>.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Inside <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code>. You can nest a full <code>&lt;ul&gt;</code> inside an <code>&lt;li&gt;</code> for sub-lists.</div>
+      <div class="code-block"><pre><span class="kw">&lt;ul&gt;</span>
+  <span class="kw">&lt;li&gt;</span><span class="tx">Sports
+    </span><span class="kw">&lt;ul&gt;</span>
+      <span class="kw">&lt;li&gt;</span><span class="tx">Cricket</span><span class="kw">&lt;/li&gt;</span>
+      <span class="kw">&lt;li&gt;</span><span class="tx">Football</span><span class="kw">&lt;/li&gt;</span>
+    <span class="kw">&lt;/ul&gt;</span>
+  <span class="kw">&lt;/li&gt;</span>
+<span class="kw">&lt;/ul&gt;</span></pre></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     SECTION: LINKS
+═══════════════════════════════════════════════════════ -->
+<div class="section-group" data-section="links">
+  <div class="section-header">
+    <h2>Links</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="tag-grid">
+
+    <!-- a — basic -->
+    <div class="tag-card" data-cat="links">
+      <div class="card-top">
+        <span class="tag-name">&lt;a&gt; — Page Link</span>
+        <span class="module-badge badge-m2">M2</span>
+      </div>
+      <div class="card-desc">
+        The <strong>anchor tag</strong> — creates a clickable link. The <code>href</code> attribute is where the link goes. Can link to other pages, sections on the same page, email, or external sites.
+      </div>
+      <div class="attrs-block">
+        <div class="attrs-label">Key Attributes</div>
+        <div class="attr-row"><span class="attr-name">href</span><span class="attr-desc">The destination URL or path. <strong>Required.</strong></span></div>
+        <div class="attr-row"><span class="attr-name">target</span><span class="attr-desc"><code>"_blank"</code> opens in a new tab. Omit for same tab.</span></div>
+        <div class="attr-row"><span class="attr-name">id</span><span class="attr-desc">Added to a heading/element so <code>href="#id"</code> can jump to it.</span></div>
+      </div>
+      <div class="usage-tip"><span class="tip-label">Rule:</span> Use <code>target="_blank"</code> for external sites only. Internal links stay in the same tab.</div>
+      <div class="code-block"><pre><span class="cm">&lt;!-- Relative (same project) --&gt;</span>
+<span class="kw">&lt;a</span> <span class="att">href</span>=<span class="val">"about.html"</span><span class="kw">&gt;</span><span class="tx">About</span><span class="kw">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- External, new tab --&gt;</span>
+<span class="kw">&lt;a</span> <span class="att">href</span>=<span class="val">"https://github.com/ada"</span>
+   <span class="att">target</span>=<span class="val">"_blank"</span><span class="kw">&gt;</span><span class="tx">GitHub</span><span class="kw">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Jump to section on same page --&gt;</span>
+<span class="kw">&lt;a</span> <span class="att">href</span>=<span class="val">"#skills"</span><span class="kw">&gt;</span><span class="tx">See my skills</span><span class="kw">&lt;/a&gt;</span>
+<span class="kw">&lt;h2</span> <span class="att">id</span>=<span class="val">"skills"</span><span class="kw">&gt;</span><span class="tx">Skills</span><span class="kw">&lt;/h2&gt;</span></pre></div>
+    </div>
+
+    <!-- a — mailto -->
+    <div class="tag-card" data-cat="links">
+      <div class="card-top">
+        <span class="tag-name">&lt;a&gt; — Email &amp; Phone</span>
+        <span class="module-badge badge-m2">M2</span>
+      </div>
+      <div class="card-desc">
+        The same <code>&lt;a&gt;</code> tag, but with special <code>href</code> values. <code>mailto:</code> opens the visitor's email app. <code>tel:</code> opens the phone app on mobile devices.
+      </div>
+      <div class="attrs-block">
+        <div class="attrs-label">Special href Values</div>
+        <div class="attr-row"><span class="attr-name">mailto:</span><span class="attr-desc"><code>href="mailto:you@email.com"</code> — opens email app</span></div>
+        <div class="attr-row"><span class="attr-name">tel:</span><span class="attr-desc"><code>href="tel:+91XXXXXXXXXX"</code> — opens dialer on mobile</span></div>
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Contact sections. Show the address as visible text too — some users copy-paste instead of clicking.</div>
+      <div class="code-block"><pre><span class="kw">&lt;a</span> <span class="att">href</span>=<span class="val">"mailto:ada@example.com"</span><span class="kw">&gt;</span>
+  <span class="tx">Email Me</span>
+<span class="kw">&lt;/a&gt;</span>
+
+<span class="kw">&lt;a</span> <span class="att">href</span>=<span class="val">"tel:+919876543210"</span><span class="kw">&gt;</span>
+  <span class="tx">Call +91 98765 43210</span>
+<span class="kw">&lt;/a&gt;</span></pre></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     SECTION: IMAGES
+═══════════════════════════════════════════════════════ -->
+<div class="section-group" data-section="images">
+  <div class="section-header">
+    <h2>Images</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="tag-grid">
+
+    <!-- img -->
+    <div class="tag-card" data-cat="images">
+      <div class="card-top">
+        <span class="tag-name">&lt;img&gt;</span>
+        <span class="module-badge badge-m2">M2</span>
+      </div>
+      <div class="card-desc">
+        Embeds an <strong>image</strong>. Self-closing. <code>src</code> points to the file; <code>alt</code> is the text shown when the image can't load and read aloud by screen readers. <strong>Never skip alt.</strong>
+      </div>
+      <div class="attrs-block">
+        <div class="attrs-label">Attributes</div>
+        <div class="attr-row"><span class="attr-name">src</span><span class="attr-desc">Path to the image file. <strong>Required.</strong> Use a relative path like <code>images/photo.jpg</code>.</span></div>
+        <div class="attr-row"><span class="attr-name">alt</span><span class="attr-desc">Descriptive text. <strong>Required.</strong> Describe what a friend on the phone would need to hear.</span></div>
+        <div class="attr-row"><span class="attr-name">width / height</span><span class="attr-desc">Optional pixel size. Prefer CSS for layout; use these as hints for the browser to reserve space.</span></div>
+      </div>
+      <div class="usage-tip"><span class="tip-label">Rule:</span> Organize images in an <code>/images</code> folder. A bad alt: <code>alt="img1"</code>. Good alt: <code>alt="Ada presenting to classmates"</code>.</div>
+      <div class="code-block"><pre><span class="kw">&lt;img</span>
+  <span class="att">src</span>=<span class="val">"images/profile.jpg"</span>
+  <span class="att">alt</span>=<span class="val">"Ada smiling in front of a whiteboard"</span>
+  <span class="att">width</span>=<span class="val">"200"</span>
+<span class="kw">&gt;</span></pre></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     SECTION: SEMANTIC LAYOUT
+═══════════════════════════════════════════════════════ -->
+<div class="section-group" data-section="layout">
+  <div class="section-header">
+    <h2>Semantic Layout</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="tag-grid">
+
+    <!-- header -->
+    <div class="tag-card" data-cat="layout">
+      <div class="card-top">
+        <span class="tag-name">&lt;header&gt;</span>
+        <span class="module-badge badge-m2">M2</span>
+      </div>
+      <div class="card-desc">
+        The <strong>top-of-page landmark</strong>. Contains your name/logo, an intro, and the <code>&lt;nav&gt;</code>. Screen readers and Google know this is the page header — unlike a <code>&lt;div&gt;</code>.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> One per page, at the top. Contains your <code>&lt;h1&gt;</code> and <code>&lt;nav&gt;</code>. Never put main content here.</div>
+      <div class="code-block"><pre><span class="kw">&lt;header&gt;</span>
+  <span class="kw">&lt;h1&gt;</span><span class="tx">Ada Lovelace</span><span class="kw">&lt;/h1&gt;</span>
+  <span class="kw">&lt;nav&gt;</span><span class="tx">…</span><span class="kw">&lt;/nav&gt;</span>
+<span class="kw">&lt;/header&gt;</span></pre></div>
+    </div>
+
+    <!-- nav -->
+    <div class="tag-card" data-cat="layout">
+      <div class="card-top">
+        <span class="tag-name">&lt;nav&gt;</span>
+        <span class="module-badge badge-m2">M2</span>
+      </div>
+      <div class="card-desc">
+        The <strong>navigation landmark</strong>. Wraps links that help users move around the site or page. Screen reader users can jump directly to the nav. Contains only links, not text paragraphs.
+      </div>
+      <div class="usage-tip"><span class="tip-label">Rule:</span> Only navigation links inside. Screen readers skip to it. Don't put paragraphs or headings inside <code>&lt;nav&gt;</code>.</div>
+      <div class="code-block"><pre><span class="kw">&lt;nav&gt;</span>
+  <span class="kw">&lt;a</span> <span class="att">href</span>=<span class="val">"index.html"</span><span class="kw">&gt;</span><span class="tx">Home</span><span class="kw">&lt;/a&gt;</span>
+  <span class="kw">&lt;a</span> <span class="att">href</span>=<span class="val">"about.html"</span><span class="kw">&gt;</span><span class="tx">About</span><span class="kw">&lt;/a&gt;</span>
+  <span class="kw">&lt;a</span> <span class="att">href</span>=<span class="val">"contact.html"</span><span class="kw">&gt;</span><span class="tx">Contact</span><span class="kw">&lt;/a&gt;</span>
+<span class="kw">&lt;/nav&gt;</span></pre></div>
+    </div>
+
+    <!-- main -->
+    <div class="tag-card" data-cat="layout">
+      <div class="card-top">
+        <span class="tag-name">&lt;main&gt;</span>
+        <span class="module-badge badge-m2">M2</span>
+      </div>
+      <div class="card-desc">
+        The <strong>primary content landmark</strong>. The unique content of <em>this</em> page goes here — not the nav or footer. Screen readers have a "skip to main" shortcut that jumps directly here.
+      </div>
+      <div class="usage-tip"><span class="tip-label">Rule:</span> Exactly <strong>one</strong> per page. Never put repeated elements (nav, footer) inside it. Contains your sections.</div>
+      <div class="code-block"><pre><span class="kw">&lt;main&gt;</span>
+  <span class="kw">&lt;section</span> <span class="att">id</span>=<span class="val">"about"</span><span class="kw">&gt;</span><span class="tx">…</span><span class="kw">&lt;/section&gt;</span>
+  <span class="kw">&lt;section</span> <span class="att">id</span>=<span class="val">"skills"</span><span class="kw">&gt;</span><span class="tx">…</span><span class="kw">&lt;/section&gt;</span>
+<span class="kw">&lt;/main&gt;</span></pre></div>
+    </div>
+
+    <!-- section -->
+    <div class="tag-card" data-cat="layout">
+      <div class="card-top">
+        <span class="tag-name">&lt;section&gt;</span>
+        <span class="module-badge badge-m2">M2</span>
+      </div>
+      <div class="card-desc">
+        A <strong>thematic grouping</strong> of content. Each section should have its own heading. Use to group your About, Skills, Roadmap, Projects blocks — each one a distinct topic.
+      </div>
+      <div class="attrs-block">
+        <div class="attrs-label">Common Attribute</div>
+        <div class="attr-row"><span class="attr-name">id</span><span class="attr-desc">Adds a jump target: <code>href="#skills"</code> jumps here. Use for in-page nav links.</span></div>
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Grouping content that belongs together under a heading. Inside <code>&lt;main&gt;</code>. Use <code>id</code> to make it a jump target.</div>
+      <div class="code-block"><pre><span class="kw">&lt;section</span> <span class="att">id</span>=<span class="val">"skills"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;h2&gt;</span><span class="tx">Skills I'm Learning</span><span class="kw">&lt;/h2&gt;</span>
+  <span class="kw">&lt;ul&gt;</span><span class="tx">…</span><span class="kw">&lt;/ul&gt;</span>
+<span class="kw">&lt;/section&gt;</span></pre></div>
+    </div>
+
+    <!-- aside -->
+    <div class="tag-card" data-cat="layout">
+      <div class="card-top">
+        <span class="tag-name">&lt;aside&gt;</span>
+        <span class="module-badge badge-m2">M2</span>
+      </div>
+      <div class="card-desc">
+        <strong>Tangential content</strong> — related to the nearby content but not essential to it. Think sidebars, pull-quotes, fun facts, or "Did you know?" boxes.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Supplementary info that could be removed without breaking the main flow. Sidebars, callouts, fun facts.</div>
+      <div class="code-block"><pre><span class="kw">&lt;aside&gt;</span>
+  <span class="kw">&lt;p&gt;</span><span class="tx">Fun fact: I can solve a Rubik's
+  cube in under 2 minutes!</span><span class="kw">&lt;/p&gt;</span>
+<span class="kw">&lt;/aside&gt;</span></pre></div>
+    </div>
+
+    <!-- footer -->
+    <div class="tag-card" data-cat="layout">
+      <div class="card-top">
+        <span class="tag-name">&lt;footer&gt;</span>
+        <span class="module-badge badge-m2">M2</span>
+      </div>
+      <div class="card-desc">
+        The <strong>bottom-of-page landmark</strong>. Contains copyright, repeated contact links, social links. Screen readers identify it as the site footer.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Once per page, at the bottom. Use the HTML entity <code>&amp;copy;</code> for the © symbol.</div>
+      <div class="code-block"><pre><span class="kw">&lt;footer&gt;</span>
+  <span class="kw">&lt;p&gt;</span><span class="tx">&amp;copy; 2026 Ada Lovelace</span><span class="kw">&lt;/p&gt;</span>
+  <span class="kw">&lt;a</span> <span class="att">href</span>=<span class="val">"mailto:ada@email.com"</span><span class="kw">&gt;</span>
+    <span class="tx">Contact</span>
+  <span class="kw">&lt;/a&gt;</span>
+<span class="kw">&lt;/footer&gt;</span></pre></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     SECTION: TABLES
+═══════════════════════════════════════════════════════ -->
+<div class="section-group" data-section="tables">
+  <div class="section-header">
+    <h2>Tables</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="tag-grid">
+
+    <!-- table -->
+    <div class="tag-card" data-cat="tables">
+      <div class="card-top">
+        <span class="tag-name">&lt;table&gt;</span>
+        <span class="module-badge badge-m3">M3</span>
+      </div>
+      <div class="card-desc">
+        The <strong>table container</strong>. Wraps all other table elements. Only use tables for <em>actual tabular data</em> — rows and columns of related information. Never use for layout.
+      </div>
+      <div class="usage-tip"><span class="tip-label">Use for:</span> Skills with levels, project lists, schedules, comparisons. <strong>Not for:</strong> navigation bars, page layout, image grids.</div>
+      <div class="code-block"><pre><span class="kw">&lt;table&gt;</span>
+  <span class="kw">&lt;caption&gt;</span><span class="tx">My Projects</span><span class="kw">&lt;/caption&gt;</span>
+  <span class="kw">&lt;thead&gt;</span><span class="tx">…</span><span class="kw">&lt;/thead&gt;</span>
+  <span class="kw">&lt;tbody&gt;</span><span class="tx">…</span><span class="kw">&lt;/tbody&gt;</span>
+<span class="kw">&lt;/table&gt;</span></pre></div>
+    </div>
+
+    <!-- caption -->
+    <div class="tag-card" data-cat="tables">
+      <div class="card-top">
+        <span class="tag-name">&lt;caption&gt;</span>
+        <span class="module-badge badge-m3">M3</span>
+      </div>
+      <div class="card-desc">
+        A <strong>table title</strong> — displayed above the table, associated with it for screen readers. Makes the table's purpose immediately clear without needing a separate heading.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Always include one. Must be the first child inside <code>&lt;table&gt;</code>.</div>
+      <div class="code-block"><pre><span class="kw">&lt;table&gt;</span>
+  <span class="kw">&lt;caption&gt;</span><span class="tx">Skills &amp; Proficiency Levels</span><span class="kw">&lt;/caption&gt;</span>
+  <span class="tx">…</span>
+<span class="kw">&lt;/table&gt;</span></pre></div>
+    </div>
+
+    <!-- thead / tbody -->
+    <div class="tag-card" data-cat="tables">
+      <div class="card-top">
+        <span class="tag-name">&lt;thead&gt; / &lt;tbody&gt;</span>
+        <span class="module-badge badge-m3">M3</span>
+      </div>
+      <div class="card-desc">
+        <strong>Groups rows</strong> into the header section (<code>&lt;thead&gt;</code>) and the body section (<code>&lt;tbody&gt;</code>). Browsers can repeat <code>&lt;thead&gt;</code> when printing long tables. Screen readers use it to announce column headers.
+      </div>
+      <div class="usage-tip"><span class="tip-label">Rule:</span> Always separate your header row into <code>&lt;thead&gt;</code>. Put all data rows in <code>&lt;tbody&gt;</code>.</div>
+      <div class="code-block"><pre><span class="kw">&lt;thead&gt;</span>
+  <span class="kw">&lt;tr&gt;&lt;th&gt;</span><span class="tx">Project</span><span class="kw">&lt;/th&gt;&lt;th&gt;</span><span class="tx">Status</span><span class="kw">&lt;/th&gt;&lt;/tr&gt;</span>
+<span class="kw">&lt;/thead&gt;</span>
+<span class="kw">&lt;tbody&gt;</span>
+  <span class="kw">&lt;tr&gt;&lt;td&gt;</span><span class="tx">Portfolio</span><span class="kw">&lt;/td&gt;&lt;td&gt;</span><span class="tx">In progress</span><span class="kw">&lt;/td&gt;&lt;/tr&gt;</span>
+<span class="kw">&lt;/tbody&gt;</span></pre></div>
+    </div>
+
+    <!-- tr -->
+    <div class="tag-card" data-cat="tables">
+      <div class="card-top">
+        <span class="tag-name">&lt;tr&gt;</span>
+        <span class="module-badge badge-m3">M3</span>
+      </div>
+      <div class="card-desc">
+        A <strong>table row</strong>. Contains <code>&lt;th&gt;</code> or <code>&lt;td&gt;</code> cells. Lives inside <code>&lt;thead&gt;</code> or <code>&lt;tbody&gt;</code>. One <code>&lt;tr&gt;</code> = one horizontal row.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Every row of data. The number of <code>&lt;td&gt;</code>/<code>&lt;th&gt;</code> cells should be the same across all rows.</div>
+      <div class="code-block"><pre><span class="kw">&lt;tr&gt;</span>
+  <span class="kw">&lt;td&gt;</span><span class="tx">HTML</span><span class="kw">&lt;/td&gt;</span>
+  <span class="kw">&lt;td&gt;</span><span class="tx">Confident</span><span class="kw">&lt;/td&gt;</span>
+  <span class="kw">&lt;td&gt;</span><span class="tx">Module 1–4</span><span class="kw">&lt;/td&gt;</span>
+<span class="kw">&lt;/tr&gt;</span></pre></div>
+    </div>
+
+    <!-- th -->
+    <div class="tag-card" data-cat="tables">
+      <div class="card-top">
+        <span class="tag-name">&lt;th&gt;</span>
+        <span class="module-badge badge-m3">M3</span>
+      </div>
+      <div class="card-desc">
+        A <strong>header cell</strong>. Rendered bold and centered by default. Screen readers announce the header when reading each row's data. Use in <code>&lt;thead&gt;</code> rows or as the first cell of each body row.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Column headings (inside <code>&lt;thead&gt;</code>). Also valid as the first cell of each row for row labels.</div>
+      <div class="code-block"><pre><span class="kw">&lt;thead&gt;</span>
+  <span class="kw">&lt;tr&gt;</span>
+    <span class="kw">&lt;th&gt;</span><span class="tx">Skill</span><span class="kw">&lt;/th&gt;</span>
+    <span class="kw">&lt;th&gt;</span><span class="tx">Level</span><span class="kw">&lt;/th&gt;</span>
+  <span class="kw">&lt;/tr&gt;</span>
+<span class="kw">&lt;/thead&gt;</span></pre></div>
+    </div>
+
+    <!-- td -->
+    <div class="tag-card" data-cat="tables">
+      <div class="card-top">
+        <span class="tag-name">&lt;td&gt;</span>
+        <span class="module-badge badge-m3">M3</span>
+      </div>
+      <div class="card-desc">
+        A <strong>regular data cell</strong>. Goes inside <code>&lt;tbody&gt;</code> rows. This is the everyday workhorse — most cells in a table are <code>&lt;td&gt;</code>.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Every data cell in the body of the table. Can contain text, images, links, or other HTML.</div>
+      <div class="code-block"><pre><span class="kw">&lt;tr&gt;</span>
+  <span class="kw">&lt;td&gt;</span><span class="tx">CSS</span><span class="kw">&lt;/td&gt;</span>
+  <span class="kw">&lt;td&gt;</span><span class="tx">Learning</span><span class="kw">&lt;/td&gt;</span>
+<span class="kw">&lt;/tr&gt;</span></pre></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     SECTION: FORMS
+═══════════════════════════════════════════════════════ -->
+<div class="section-group" data-section="forms">
+  <div class="section-header">
+    <h2>Forms</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="tag-grid">
+
+    <!-- form -->
+    <div class="tag-card" data-cat="forms">
+      <div class="card-top">
+        <span class="tag-name">&lt;form&gt;</span>
+        <span class="module-badge badge-m3">M3</span>
+      </div>
+      <div class="card-desc">
+        The <strong>form container</strong>. Wraps all inputs, labels, and buttons. Without a backend, clicking Submit won't send anything — but the structure is the same.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Any time you collect user input — contact forms, sign-ups, searches. All form fields go inside.</div>
+      <div class="code-block"><pre><span class="kw">&lt;form&gt;</span>
+  <span class="kw">&lt;fieldset&gt;</span><span class="tx">…labels &amp; inputs…</span><span class="kw">&lt;/fieldset&gt;</span>
+  <span class="kw">&lt;button</span> <span class="att">type</span>=<span class="val">"submit"</span><span class="kw">&gt;</span><span class="tx">Send</span><span class="kw">&lt;/button&gt;</span>
+<span class="kw">&lt;/form&gt;</span></pre></div>
+    </div>
+
+    <!-- fieldset + legend -->
+    <div class="tag-card" data-cat="forms">
+      <div class="card-top">
+        <span class="tag-name">&lt;fieldset&gt; / &lt;legend&gt;</span>
+        <span class="module-badge badge-m4">M4</span>
+      </div>
+      <div class="card-desc">
+        <code>&lt;fieldset&gt;</code> <strong>groups related fields</strong>; <code>&lt;legend&gt;</code> is its caption. Screen readers announce the legend before reading each field inside the group — vital for accessibility.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Grouping related fields together ("Your Details", "Your Message"). Use 2+ fieldsets in any form with more than 3 fields.</div>
+      <div class="code-block"><pre><span class="kw">&lt;fieldset&gt;</span>
+  <span class="kw">&lt;legend&gt;</span><span class="tx">Your Details</span><span class="kw">&lt;/legend&gt;</span>
+  <span class="kw">&lt;label</span> <span class="att">for</span>=<span class="val">"name"</span><span class="kw">&gt;</span><span class="tx">Name</span><span class="kw">&lt;/label&gt;</span>
+  <span class="kw">&lt;input</span> <span class="att">type</span>=<span class="val">"text"</span> <span class="att">id</span>=<span class="val">"name"</span><span class="kw">&gt;</span>
+<span class="kw">&lt;/fieldset&gt;</span></pre></div>
+    </div>
+
+    <!-- label -->
+    <div class="tag-card" data-cat="forms">
+      <div class="card-top">
+        <span class="tag-name">&lt;label&gt;</span>
+        <span class="module-badge badge-m3">M3</span>
+      </div>
+      <div class="card-desc">
+        Associates a <strong>text description with an input</strong>. When <code>for</code> matches the input's <code>id</code>, clicking the label focuses the field — and screen readers read the label when the field is focused. <strong>Never skip labels.</strong>
+      </div>
+      <div class="attrs-block">
+        <div class="attrs-label">Key Attribute</div>
+        <div class="attr-row"><span class="attr-name">for</span><span class="attr-desc">Must match the <code>id</code> of the associated input. <strong>Required for accessibility.</strong></span></div>
+      </div>
+      <div class="usage-tip"><span class="tip-label">Rule:</span> Every input needs a label. <code>for</code> on the label must match <code>id</code> on the input — exactly.</div>
+      <div class="code-block"><pre><span class="kw">&lt;label</span> <span class="att">for</span>=<span class="val">"email"</span><span class="kw">&gt;</span><span class="tx">Email Address</span><span class="kw">&lt;/label&gt;</span>
+<span class="kw">&lt;input</span> <span class="att">type</span>=<span class="val">"email"</span> <span class="att">id</span>=<span class="val">"email"</span>
+       <span class="att">name</span>=<span class="val">"email"</span><span class="kw">&gt;</span>
+<span class="cm">&lt;!-- for="email" ↔ id="email" ✓ --&gt;</span></pre></div>
+    </div>
+
+    <!-- input -->
+    <div class="tag-card" data-cat="forms">
+      <div class="card-top">
+        <span class="tag-name">&lt;input&gt;</span>
+        <span class="module-badge badge-m3">M3</span>
+      </div>
+      <div class="card-desc">
+        The most versatile form element — changes completely based on its <code>type</code>. Self-closing. Handles text, email, passwords, checkboxes, radio buttons, dates, file uploads, and more.
+      </div>
+      <div class="attrs-block">
+        <div class="attrs-label">Key Attributes</div>
+        <div class="attr-row"><span class="attr-name">type</span><span class="attr-desc"><code>"text"</code> <code>"email"</code> <code>"password"</code> <code>"checkbox"</code> <code>"radio"</code> <code>"date"</code> <code>"file"</code></span></div>
+        <div class="attr-row"><span class="attr-name">id</span><span class="attr-desc">Links to a <code>&lt;label for&gt;</code>. Required for accessibility.</span></div>
+        <div class="attr-row"><span class="attr-name">name</span><span class="attr-desc">Used to identify the field when the form is submitted to a server.</span></div>
+        <div class="attr-row"><span class="attr-name">required</span><span class="attr-desc">Browser blocks submission if this field is empty. No JS needed.</span></div>
+        <div class="attr-row"><span class="attr-name">minlength</span><span class="attr-desc">Minimum number of characters allowed.</span></div>
+        <div class="attr-row"><span class="attr-name">maxlength</span><span class="attr-desc">Maximum number of characters allowed.</span></div>
+        <div class="attr-row"><span class="attr-name">pattern</span><span class="attr-desc">A regex the value must match, e.g. <code>"[0-9]{6}"</code> for a 6-digit PIN.</span></div>
+        <div class="attr-row"><span class="attr-name">placeholder</span><span class="attr-desc">Hint text shown when the field is empty. Not a replacement for labels.</span></div>
+      </div>
+      <div class="usage-tip"><span class="tip-label">Rule:</span> Use <code>type="email"</code> for email fields — the browser validates the @ for free.</div>
+      <div class="code-block"><pre><span class="kw">&lt;input</span> <span class="att">type</span>=<span class="val">"text"</span> <span class="att">id</span>=<span class="val">"name"</span>
+       <span class="att">name</span>=<span class="val">"name"</span> <span class="att">required</span>
+       <span class="att">minlength</span>=<span class="val">"2"</span><span class="kw">&gt;</span>
+
+<span class="kw">&lt;input</span> <span class="att">type</span>=<span class="val">"email"</span> <span class="att">id</span>=<span class="val">"email"</span>
+       <span class="att">name</span>=<span class="val">"email"</span> <span class="att">required</span><span class="kw">&gt;</span>
+
+<span class="kw">&lt;input</span> <span class="att">type</span>=<span class="val">"text"</span> <span class="att">id</span>=<span class="val">"zip"</span>
+       <span class="att">pattern</span>=<span class="val">"[0-9]{6}"</span>
+       <span class="att">placeholder</span>=<span class="val">"6-digit PIN code"</span><span class="kw">&gt;</span></pre></div>
+    </div>
+
+    <!-- textarea -->
+    <div class="tag-card" data-cat="forms">
+      <div class="card-top">
+        <span class="tag-name">&lt;textarea&gt;</span>
+        <span class="module-badge badge-m3">M3</span>
+      </div>
+      <div class="card-desc">
+        A <strong>multi-line text input</strong>. Unlike <code>&lt;input&gt;</code>, it has an opening and closing tag. Use for messages, comments, long descriptions. Resizable by the user by default.
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Any input longer than one line — messages, feedback, bio fields. Always pair with a <code>&lt;label&gt;</code>.</div>
+      <div class="code-block"><pre><span class="kw">&lt;label</span> <span class="att">for</span>=<span class="val">"msg"</span><span class="kw">&gt;</span><span class="tx">Your Message</span><span class="kw">&lt;/label&gt;</span>
+<span class="kw">&lt;textarea</span> <span class="att">id</span>=<span class="val">"msg"</span> <span class="att">name</span>=<span class="val">"message"</span>
+          <span class="att">rows</span>=<span class="val">"5"</span> <span class="att">minlength</span>=<span class="val">"10"</span>
+          <span class="att">required</span><span class="kw">&gt;&lt;/textarea&gt;</span></pre></div>
+    </div>
+
+    <!-- select + option -->
+    <div class="tag-card" data-cat="forms">
+      <div class="card-top">
+        <span class="tag-name">&lt;select&gt; / &lt;option&gt;</span>
+        <span class="module-badge badge-m3">M3</span>
+      </div>
+      <div class="card-desc">
+        A <strong>dropdown menu</strong>. <code>&lt;select&gt;</code> is the container; each <code>&lt;option&gt;</code> is one choice. The <code>value</code> attribute on each option is what gets sent to the server — it can differ from the displayed text.
+      </div>
+      <div class="attrs-block">
+        <div class="attrs-label">Attributes</div>
+        <div class="attr-row"><span class="attr-name">id / name</span><span class="attr-desc">On <code>&lt;select&gt;</code> — links to label and identifies field on submit.</span></div>
+        <div class="attr-row"><span class="attr-name">value</span><span class="attr-desc">On <code>&lt;option&gt;</code> — the data sent to the server when this is chosen.</span></div>
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> A fixed set of choices (5+ items). Under 4 choices, consider radio buttons instead.</div>
+      <div class="code-block"><pre><span class="kw">&lt;label</span> <span class="att">for</span>=<span class="val">"reason"</span><span class="kw">&gt;</span><span class="tx">Reason for contact</span><span class="kw">&lt;/label&gt;</span>
+<span class="kw">&lt;select</span> <span class="att">id</span>=<span class="val">"reason"</span> <span class="att">name</span>=<span class="val">"reason"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;option</span> <span class="att">value</span>=<span class="val">"job"</span><span class="kw">&gt;</span><span class="tx">Job opportunity</span><span class="kw">&lt;/option&gt;</span>
+  <span class="kw">&lt;option</span> <span class="att">value</span>=<span class="val">"collab"</span><span class="kw">&gt;</span><span class="tx">Collaboration</span><span class="kw">&lt;/option&gt;</span>
+  <span class="kw">&lt;option</span> <span class="att">value</span>=<span class="val">"other"</span><span class="kw">&gt;</span><span class="tx">Other</span><span class="kw">&lt;/option&gt;</span>
+<span class="kw">&lt;/select&gt;</span></pre></div>
+    </div>
+
+    <!-- button -->
+    <div class="tag-card" data-cat="forms">
+      <div class="card-top">
+        <span class="tag-name">&lt;button&gt;</span>
+        <span class="module-badge badge-m3">M3</span>
+      </div>
+      <div class="card-desc">
+        A <strong>clickable button</strong>. Inside a form, <code>type="submit"</code> submits the form. Always use a real <code>&lt;button&gt;</code> or <code>&lt;a&gt;</code> for interactive elements — never a <code>&lt;div&gt;</code> pretending to be clickable.
+      </div>
+      <div class="attrs-block">
+        <div class="attrs-label">type Attribute Values</div>
+        <div class="attr-row"><span class="attr-name">submit</span><span class="attr-desc">Submits the parent form. Default inside a form.</span></div>
+        <div class="attr-row"><span class="attr-name">button</span><span class="attr-desc">Does nothing by default — use with JavaScript.</span></div>
+        <div class="attr-row"><span class="attr-name">reset</span><span class="attr-desc">Clears all form fields back to default values.</span></div>
+      </div>
+      <div class="usage-tip"><span class="tip-label">Rule:</span> Always set <code>type</code> explicitly. Real buttons are keyboard-focusable automatically. <code>&lt;div&gt;</code>s are not.</div>
+      <div class="code-block"><pre><span class="cm">&lt;!-- Inside a form --&gt;</span>
+<span class="kw">&lt;button</span> <span class="att">type</span>=<span class="val">"submit"</span><span class="kw">&gt;</span><span class="tx">Send Message</span><span class="kw">&lt;/button&gt;</span>
+
+<span class="cm">&lt;!-- Standalone (used with JS) --&gt;</span>
+<span class="kw">&lt;button</span> <span class="att">type</span>=<span class="val">"button"</span><span class="kw">&gt;</span><span class="tx">Load More</span><span class="kw">&lt;/button&gt;</span></pre></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     SECTION: MEDIA
+═══════════════════════════════════════════════════════ -->
+<div class="section-group" data-section="media">
+  <div class="section-header">
+    <h2>Media &amp; Embeds</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="tag-grid">
+
+    <!-- video -->
+    <div class="tag-card" data-cat="media">
+      <div class="card-top">
+        <span class="tag-name">&lt;video&gt;</span>
+        <span class="module-badge badge-m4">M4</span>
+      </div>
+      <div class="card-desc">
+        Embeds a <strong>video file you own</strong>. Use for demo videos, project recordings, or any video file in your project folder. The <code>controls</code> attribute shows play/pause/volume to the user.
+      </div>
+      <div class="attrs-block">
+        <div class="attrs-label">Attributes</div>
+        <div class="attr-row"><span class="attr-name">controls</span><span class="attr-desc">Shows browser's built-in play/pause/volume controls. Always include.</span></div>
+        <div class="attr-row"><span class="attr-name">width</span><span class="attr-desc">Display width in pixels. Use CSS for responsive sizing.</span></div>
+        <div class="attr-row"><span class="attr-name">autoplay</span><span class="attr-desc">Auto-starts. Must be combined with <code>muted</code> — browsers block unmuted autoplay.</span></div>
+        <div class="attr-row"><span class="attr-name">loop</span><span class="attr-desc">Replays continuously when it ends.</span></div>
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> A video file you have locally. Use <code>&lt;iframe&gt;</code> for YouTube/Vimeo. Include a <code>&lt;source&gt;</code> child for the file path.</div>
+      <div class="code-block"><pre><span class="kw">&lt;video</span> <span class="att">controls</span> <span class="att">width</span>=<span class="val">"400"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;source</span> <span class="att">src</span>=<span class="val">"videos/demo.mp4"</span>
+          <span class="att">type</span>=<span class="val">"video/mp4"</span><span class="kw">&gt;</span>
+  <span class="tx">Your browser doesn't support video.</span>
+<span class="kw">&lt;/video&gt;</span></pre></div>
+    </div>
+
+    <!-- audio -->
+    <div class="tag-card" data-cat="media">
+      <div class="card-top">
+        <span class="tag-name">&lt;audio&gt;</span>
+        <span class="module-badge badge-m4">M4</span>
+      </div>
+      <div class="card-desc">
+        Embeds an <strong>audio file</strong>. Works identically to <code>&lt;video&gt;</code> but for sound — music, podcasts, voice recordings. Add <code>controls</code> so users can play/pause.
+      </div>
+      <div class="attrs-block">
+        <div class="attrs-label">Attributes</div>
+        <div class="attr-row"><span class="attr-name">controls</span><span class="attr-desc">Shows play/pause/volume. Always include.</span></div>
+        <div class="attr-row"><span class="attr-name">loop</span><span class="attr-desc">Replays when finished.</span></div>
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Audio files you own — .mp3, .ogg, .wav. Use a <code>&lt;source&gt;</code> child for the file path.</div>
+      <div class="code-block"><pre><span class="kw">&lt;audio</span> <span class="att">controls</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;source</span> <span class="att">src</span>=<span class="val">"audio/intro.mp3"</span>
+          <span class="att">type</span>=<span class="val">"audio/mpeg"</span><span class="kw">&gt;</span>
+  <span class="tx">Your browser doesn't support audio.</span>
+<span class="kw">&lt;/audio&gt;</span></pre></div>
+    </div>
+
+    <!-- source -->
+    <div class="tag-card" data-cat="media">
+      <div class="card-top">
+        <span class="tag-name">&lt;source&gt;</span>
+        <span class="module-badge badge-m4">M4</span>
+      </div>
+      <div class="card-desc">
+        Specifies the <strong>media file</strong> inside a <code>&lt;video&gt;</code> or <code>&lt;audio&gt;</code>. Self-closing. You can add multiple <code>&lt;source&gt;</code> elements with different formats — the browser picks the first one it supports.
+      </div>
+      <div class="attrs-block">
+        <div class="attrs-label">Attributes</div>
+        <div class="attr-row"><span class="attr-name">src</span><span class="attr-desc">Path to the media file. Relative path like <code>videos/demo.mp4</code>.</span></div>
+        <div class="attr-row"><span class="attr-name">type</span><span class="attr-desc">MIME type: <code>"video/mp4"</code>, <code>"audio/mpeg"</code>, <code>"video/webm"</code>, etc.</span></div>
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Always used inside <code>&lt;video&gt;</code> or <code>&lt;audio&gt;</code>. The fallback text after it shows if no format is supported.</div>
+      <div class="code-block"><pre><span class="kw">&lt;video</span> <span class="att">controls</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;source</span> <span class="att">src</span>=<span class="val">"demo.mp4"</span> <span class="att">type</span>=<span class="val">"video/mp4"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;source</span> <span class="att">src</span>=<span class="val">"demo.webm"</span> <span class="att">type</span>=<span class="val">"video/webm"</span><span class="kw">&gt;</span>
+  <span class="cm">&lt;!-- Fallback text below --&gt;</span>
+  <span class="tx">Video not supported.</span>
+<span class="kw">&lt;/video&gt;</span></pre></div>
+    </div>
+
+    <!-- iframe -->
+    <div class="tag-card" data-cat="media">
+      <div class="card-top">
+        <span class="tag-name">&lt;iframe&gt;</span>
+        <span class="module-badge badge-m4">M4</span>
+      </div>
+      <div class="card-desc">
+        Embeds <strong>another website's page</strong> inside yours — YouTube videos, Google Maps, Figma prototypes, Codepen demos. Always give it a <code>title</code> for screen readers.
+      </div>
+      <div class="attrs-block">
+        <div class="attrs-label">Attributes</div>
+        <div class="attr-row"><span class="attr-name">src</span><span class="attr-desc">The URL to embed. For YouTube use the <code>/embed/VIDEO_ID</code> format.</span></div>
+        <div class="attr-row"><span class="attr-name">width / height</span><span class="attr-desc">Display dimensions in pixels. 16:9 ratio: e.g. 560×315.</span></div>
+        <div class="attr-row"><span class="attr-name">title</span><span class="attr-desc"><strong>Required for accessibility.</strong> Describes what's embedded.</span></div>
+        <div class="attr-row"><span class="attr-name">allowfullscreen</span><span class="attr-desc">Lets the user go fullscreen. Standard for video embeds.</span></div>
+      </div>
+      <div class="usage-tip"><span class="tip-label">When:</span> Embedding YouTube demos, maps, or other third-party content. Check the site's embed policy — not every site allows it.</div>
+      <div class="code-block"><pre><span class="kw">&lt;iframe</span>
+  <span class="att">src</span>=<span class="val">"https://www.youtube.com/embed/dQw4w9WgXcQ"</span>
+  <span class="att">width</span>=<span class="val">"560"</span> <span class="att">height</span>=<span class="val">"315"</span>
+  <span class="att">title</span>=<span class="val">"Project demo video"</span>
+  <span class="att">allowfullscreen</span>
+<span class="kw">&gt;&lt;/iframe&gt;</span></pre></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- JS -->
+<script>
+(function(){
+  // Theme
+  const root = document.documentElement;
+  const btn  = document.getElementById('theme-toggle');
+  const saved = (() => { try { return localStorage.getItem('theme'); } catch(e){} })();
+  if (saved) { root.dataset.theme = saved; btn.textContent = saved === 'dark' ? '☀️' : '🌙'; }
+  btn.addEventListener('click', () => {
+    const cur = root.dataset.theme || 'light';
+    const next = cur === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    btn.textContent = next === 'dark' ? '☀️' : '🌙';
+    try { localStorage.setItem('theme', next); } catch(e){}
+  });
+
+  // Filter
+  const allCards = Array.from(document.querySelectorAll('.tag-card'));
+  const chip = document.getElementById('count-chip');
+  const filterBtns = document.querySelectorAll('.filter-btn');
+
+  function updateCount() {
+    const visible = allCards.filter(c => !c.hidden).length;
+    chip.textContent = visible + ' tag' + (visible !== 1 ? 's' : '');
+  }
+
+  filterBtns.forEach(b => {
+    b.addEventListener('click', () => {
+      filterBtns.forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      const cat = b.dataset.cat;
+      allCards.forEach(card => {
+        card.hidden = cat !== 'all' && card.dataset.cat !== cat;
+      });
+      // Section headers
+      document.querySelectorAll('.section-group').forEach(sec => {
+        const anyVisible = sec.querySelectorAll('.tag-card:not([hidden])').length > 0;
+        sec.hidden = !anyVisible;
+      });
+      updateCount();
+    });
+  });
+
+  updateCount();
+})();
+</script>
+
+</body></html>

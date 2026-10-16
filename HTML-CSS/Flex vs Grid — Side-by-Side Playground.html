@@ -1,0 +1,646 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Flex vs Grid — Side-by-Side Playground</title>
+<style>
+:root {
+  --bg:#f0f4f8;--surface:#fff;--surface2:#f8fafc;--fg:#0f172a;--muted:#64748b;--border:#e2e8f0;
+  --flex-color:#15803d;--flex-bg:#dcfce7;--flex-mid:#86efac;--flex-dark:#14532d;
+  --grid-color:#6d28d9;--grid-bg:#ede9fe;--grid-mid:#c4b5fd;--grid-dark:#4c1d95;
+  --rw-border:#f59e0b;--rw-bg:#fffbeb;--rw-color:#92400e;
+  --code-bg:#0f172a;--code-fg:#e2e8f0;--shadow:0 2px 12px rgba(0,0,0,0.08);
+  color-scheme:light;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f172a;--surface:#1e293b;--surface2:#0f172a;--fg:#f1f5f9;--muted:#94a3b8;--border:#334155;
+    --flex-bg:#052e16;--flex-mid:#14532d;--flex-color:#4ade80;
+    --grid-bg:#2e1065;--grid-mid:#4c1d95;--grid-color:#c4b5fd;
+    --shadow:0 2px 12px rgba(0,0,0,0.3);color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f172a;--surface:#1e293b;--surface2:#0f172a;--fg:#f1f5f9;--muted:#94a3b8;--border:#334155;
+  --flex-bg:#052e16;--flex-mid:#14532d;--flex-color:#4ade80;
+  --grid-bg:#2e1065;--grid-mid:#4c1d95;--grid-color:#c4b5fd;
+  --shadow:0 2px 12px rgba(0,0,0,0.3);color-scheme:dark;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--fg);min-height:100vh;}
+
+/* HEADER */
+.site-header{background:#0f172a;color:#fff;padding:24px 36px 20px;}
+.site-header h1{font-size:1.5rem;font-weight:800;margin-bottom:4px;letter-spacing:-.3px;}
+.site-header p{font-size:.88rem;color:#94a3b8;margin-bottom:12px;}
+.header-badges{display:flex;gap:8px;flex-wrap:wrap;}
+.hbadge{font-size:.72rem;font-weight:700;padding:4px 12px;border-radius:20px;}
+.hbadge-flex{background:#dcfce7;color:#15803d;}
+.hbadge-grid{background:#ede9fe;color:#6d28d9;}
+.hbadge-vs{background:#1e293b;color:#94a3b8;border:1px solid #334155;}
+
+/* CONTENT */
+.page{max-width:1200px;margin:0 auto;padding:36px 24px;}
+
+/* SECTION */
+.section-block{margin-bottom:60px;}
+.section-num{font-size:.72rem;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+.section-title{font-size:1.25rem;font-weight:800;margin-bottom:6px;}
+.section-desc{font-size:.9rem;color:var(--muted);margin-bottom:14px;line-height:1.6;}
+.real-world{background:var(--rw-bg);border-left:4px solid var(--rw-border);border-radius:0 8px 8px 0;padding:12px 16px;font-size:.84rem;color:var(--rw-color);margin-bottom:16px;line-height:1.55;}
+.real-world strong{display:block;margin-bottom:2px;font-size:.8rem;}
+
+/* CONTROLS BAR */
+.controls-bar{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+.ctrl-group{display:flex;align-items:center;gap:8px;}
+.ctrl-group label{font-size:.8rem;font-weight:600;color:var(--muted);white-space:nowrap;}
+.ctrl-group select,.ctrl-group input[type=range]{font-size:.82rem;padding:5px 8px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--fg);}
+
+/* SPLIT PANELS */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:720px){.split{grid-template-columns:1fr;}}
+
+.panel{border-radius:12px;overflow:hidden;border:1px solid var(--border);}
+.panel-header{display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:.78rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
+.panel-header.flex-head{background:var(--flex-bg);color:var(--flex-dark);}
+.panel-header.flex-head .dot{width:8px;height:8px;border-radius:50%;background:var(--flex-color);}
+.panel-header.grid-head{background:var(--grid-bg);color:var(--grid-dark);}
+.panel-header.grid-head .dot{width:8px;height:8px;border-radius:50%;background:var(--grid-color);}
+@media(prefers-color-scheme:dark){
+  .panel-header.flex-head{color:#4ade80;}
+  .panel-header.grid-head{color:#c4b5fd;}
+}
+:root[data-theme="dark"] .panel-header.flex-head{color:#4ade80;}
+:root[data-theme="dark"] .panel-header.grid-head{color:#c4b5fd;}
+
+.demo-area{background:var(--surface2);padding:16px;min-height:160px;}
+.code-area{background:var(--code-bg);padding:12px 14px;font-family:monospace;font-size:.76rem;line-height:1.7;color:#e2e8f0;white-space:pre;overflow-x:auto;}
+.code-area .kw{color:#93c5fd;}
+.code-area .prop{color:#86efac;}
+.code-area .val{color:#fde68a;}
+
+/* DEMO CELLS */
+.demo-cell{display:flex;align-items:center;justify-content:center;border-radius:6px;font-size:.78rem;font-weight:700;color:#fff;min-height:44px;}
+.c1{background:#4f46e5;}.c2{background:#7c3aed;}.c3{background:#0891b2;}
+.c4{background:#059669;}.c5{background:#d97706;}.c6{background:#dc2626;}
+
+/* WINNER TAG */
+.winner-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;}
+.winner-tag{font-size:.78rem;font-weight:700;padding:5px 12px;border-radius:20px;}
+.winner-tag.flex{background:var(--flex-bg);color:var(--flex-dark);}
+.winner-tag.grid{background:var(--grid-bg);color:var(--grid-dark);}
+.winner-tag.tie{background:#fef9c3;color:#854d0e;}
+@media(prefers-color-scheme:dark){
+  .winner-tag.flex{color:#4ade80;}
+  .winner-tag.grid{color:#c4b5fd;}
+  .winner-tag.tie{background:#422006;color:#fde68a;}
+}
+:root[data-theme="dark"] .winner-tag.flex{color:#4ade80;}
+:root[data-theme="dark"] .winner-tag.grid{color:#c4b5fd;}
+:root[data-theme="dark"] .winner-tag.tie{background:#422006;color:#fde68a;}
+
+.divider{border:none;border-top:1px solid var(--border);margin-bottom:60px;}
+
+/* THEME TOGGLE */
+.theme-btn{position:fixed;top:16px;right:16px;background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:8px;padding:7px 13px;font-size:.78rem;font-weight:600;cursor:pointer;z-index:99;}
+</style>
+
+<button class="theme-btn" onclick="toggleTheme()">☀︎ / ☾</button>
+
+<div class="site-header">
+  <h1>⚡ Flexbox vs CSS Grid — Playground</h1>
+  <p>Same problem. Two tools. See the difference live.</p>
+  <div class="header-badges">
+    <span class="hbadge hbadge-flex">🟢 Flexbox — 1D layouts</span>
+    <span class="hbadge hbadge-vs">vs</span>
+    <span class="hbadge hbadge-grid">🟣 CSS Grid — 2D layouts</span>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ── SECTION 1: Row of items ── -->
+<div class="section-block" id="s1">
+  <div class="section-num">01 / 08</div>
+  <div class="section-title">Row of items</div>
+  <div class="section-desc">The most basic case — putting boxes side by side. Both can do it, but the <em>why</em> is different.</div>
+  <div class="real-world"><strong>🏫 School analogy:</strong> Desks in a row. Flex arranges them along one corridor. Grid places them in a pre-drawn grid on the floor plan.</div>
+  <div class="controls-bar">
+    <div class="ctrl-group"><label>Items:</label>
+      <select onchange="s1Update(this.value)">
+        <option value="3">3 items</option>
+        <option value="4" selected>4 items</option>
+        <option value="6">6 items</option>
+      </select>
+    </div>
+  </div>
+  <div class="split">
+    <div class="panel">
+      <div class="panel-header flex-head"><span class="dot"></span>Flexbox</div>
+      <div class="demo-area"><div id="s1-flex" style="display:flex;gap:8px;"></div></div>
+      <div class="code-area" id="s1-flex-code"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-header grid-head"><span class="dot"></span>CSS Grid</div>
+      <div class="demo-area"><div id="s1-grid" style="display:grid;gap:8px;"></div></div>
+      <div class="code-area" id="s1-grid-code"></div>
+    </div>
+  </div>
+  <div class="winner-row">
+    <span class="winner-tag tie">🤝 Tie — both work equally here</span>
+    <span class="winner-tag flex">✅ Flex wins for dynamic count of items</span>
+    <span class="winner-tag grid">✅ Grid wins for fixed column structure</span>
+  </div>
+</div>
+<hr class="divider">
+
+<!-- ── SECTION 2: Centering ── -->
+<div class="section-block" id="s2">
+  <div class="section-num">02 / 08</div>
+  <div class="section-title">Centering a single item</div>
+  <div class="section-desc">One box, centered perfectly. Both do it — but Grid does it in one line. Flex needs two.</div>
+  <div class="real-world"><strong>🏫 School analogy:</strong> Placing a trophy at the exact center of the display case. Grid knows the center precisely. Flex has to push from both ends.</div>
+  <div class="split">
+    <div class="panel">
+      <div class="panel-header flex-head"><span class="dot"></span>Flexbox</div>
+      <div class="demo-area" style="height:160px;">
+        <div id="s2-flex" style="display:flex;justify-content:center;align-items:center;height:100%;background:var(--flex-bg);border-radius:8px;">
+          <div class="demo-cell c1" style="width:100px;height:60px;">Trophy 🏆</div>
+        </div>
+      </div>
+      <div class="code-area"><span class="kw">.container</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">justify-content</span>: <span class="val">center</span>;
+  <span class="prop">align-items</span>: <span class="val">center</span>;
+}</div>
+    </div>
+    <div class="panel">
+      <div class="panel-header grid-head"><span class="dot"></span>CSS Grid</div>
+      <div class="demo-area" style="height:160px;">
+        <div id="s2-grid" style="display:grid;place-items:center;height:100%;background:var(--grid-bg);border-radius:8px;">
+          <div class="demo-cell c1" style="width:100px;height:60px;">Trophy 🏆</div>
+        </div>
+      </div>
+      <div class="code-area"><span class="kw">.container</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">place-items</span>: <span class="val">center</span>; <span style="color:#64748b;">/* 1 line! */</span>
+}</div>
+    </div>
+  </div>
+  <div class="winner-row">
+    <span class="winner-tag grid">🏆 Grid wins — <code>place-items: center</code> in 1 line</span>
+  </div>
+</div>
+<hr class="divider">
+
+<!-- ── SECTION 3: Equal columns ── -->
+<div class="section-block" id="s3">
+  <div class="section-num">03 / 08</div>
+  <div class="section-title">Equal-width columns</div>
+  <div class="section-desc">Make N columns of equal width. Flex uses <code>flex:1</code>. Grid uses <code>repeat(N, 1fr)</code>. Watch the difference when you resize.</div>
+  <div class="real-world"><strong>🏫 School analogy:</strong> Dividing the classroom board into equal sections. Grid draws lines first. Flex stretches each piece after placing them.</div>
+  <div class="controls-bar">
+    <div class="ctrl-group"><label>Columns:</label>
+      <select onchange="s3Update(this.value)">
+        <option value="2">2 columns</option>
+        <option value="3" selected>3 columns</option>
+        <option value="4">4 columns</option>
+      </select>
+    </div>
+  </div>
+  <div class="split">
+    <div class="panel">
+      <div class="panel-header flex-head"><span class="dot"></span>Flexbox</div>
+      <div class="demo-area"><div id="s3-flex" style="display:flex;gap:8px;"></div></div>
+      <div class="code-area" id="s3-flex-code"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-header grid-head"><span class="dot"></span>CSS Grid</div>
+      <div class="demo-area"><div id="s3-grid" style="display:grid;gap:8px;"></div></div>
+      <div class="code-area" id="s3-grid-code"></div>
+    </div>
+  </div>
+  <div class="winner-row">
+    <span class="winner-tag grid">🏆 Grid wins — columns are structurally defined, not stretched</span>
+  </div>
+</div>
+<hr class="divider">
+
+<!-- ── SECTION 4: Wrapping ── -->
+<div class="section-block" id="s4">
+  <div class="section-num">04 / 08</div>
+  <div class="section-title">Responsive wrapping</div>
+  <div class="section-desc">More items than space? Both can wrap to the next row. But <code>auto-fill</code> / <code>auto-fit</code> in Grid handles it without JavaScript.</div>
+  <div class="real-world"><strong>🏫 School analogy:</strong> Students filling seats in a hall — Flex fills one row, wraps to next when full. Grid auto-creates rows based on the floor plan.</div>
+  <div class="controls-bar">
+    <div class="ctrl-group"><label>Items:</label>
+      <select onchange="s4Update(this.value)">
+        <option value="5">5 items</option>
+        <option value="7" selected>7 items</option>
+        <option value="10">10 items</option>
+      </select>
+    </div>
+    <div class="ctrl-group"><label>Min size:</label>
+      <select onchange="s4MinUpdate(this.value)">
+        <option value="80px">80px</option>
+        <option value="120px" selected>120px</option>
+        <option value="160px">160px</option>
+      </select>
+    </div>
+  </div>
+  <div class="split">
+    <div class="panel">
+      <div class="panel-header flex-head"><span class="dot"></span>Flexbox</div>
+      <div class="demo-area"><div id="s4-flex" style="display:flex;flex-wrap:wrap;gap:8px;"></div></div>
+      <div class="code-area" id="s4-flex-code"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-header grid-head"><span class="dot"></span>CSS Grid</div>
+      <div class="demo-area"><div id="s4-grid" style="display:grid;gap:8px;"></div></div>
+      <div class="code-area" id="s4-grid-code"></div>
+    </div>
+  </div>
+  <div class="winner-row">
+    <span class="winner-tag grid">🏆 Grid wins — <code>auto-fill + minmax</code> needs no media query</span>
+    <span class="winner-tag flex">✅ Flex works too with <code>flex-wrap</code></span>
+  </div>
+</div>
+<hr class="divider">
+
+<!-- ── SECTION 5: Alignment on main vs cross axis ── -->
+<div class="section-block" id="s5">
+  <div class="section-num">05 / 08</div>
+  <div class="section-title">Axis-based alignment</div>
+  <div class="section-desc">Flex aligns along ONE axis at a time. Grid controls both axes simultaneously with <code>justify-items</code> + <code>align-items</code>.</div>
+  <div class="real-world"><strong>🏫 School analogy:</strong> Arranging items on a shelf (1D = Flex) vs arranging them on a table grid (2D = Grid).</div>
+  <div class="controls-bar">
+    <div class="ctrl-group"><label>Justify:</label>
+      <select onchange="s5Update()">
+        <option value="flex-start">start</option>
+        <option value="center" selected>center</option>
+        <option value="flex-end">end</option>
+        <option value="space-between">space-between</option>
+      </select>
+    </div>
+    <div class="ctrl-group"><label>Align:</label>
+      <select onchange="s5Update()">
+        <option value="flex-start">start</option>
+        <option value="center" selected>center</option>
+        <option value="flex-end">end</option>
+        <option value="stretch">stretch</option>
+      </select>
+    </div>
+  </div>
+  <div class="split">
+    <div class="panel">
+      <div class="panel-header flex-head"><span class="dot"></span>Flexbox</div>
+      <div class="demo-area" style="height:180px;">
+        <div id="s5-flex" style="display:flex;height:100%;gap:8px;background:var(--flex-bg);border-radius:8px;padding:8px;justify-content:center;align-items:center;">
+          <div class="demo-cell c1" style="width:55px;height:40px;">A</div>
+          <div class="demo-cell c2" style="width:55px;height:60px;">B</div>
+          <div class="demo-cell c3" style="width:55px;height:48px;">C</div>
+        </div>
+      </div>
+      <div class="code-area" id="s5-flex-code"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-header grid-head"><span class="dot"></span>CSS Grid</div>
+      <div class="demo-area" style="height:180px;">
+        <div id="s5-grid" style="display:grid;grid-template-columns:repeat(3,1fr);height:100%;gap:8px;background:var(--grid-bg);border-radius:8px;padding:8px;align-items:center;justify-items:center;">
+          <div class="demo-cell c1" style="width:55px;height:40px;">A</div>
+          <div class="demo-cell c2" style="width:55px;height:60px;">B</div>
+          <div class="demo-cell c3" style="width:55px;height:48px;">C</div>
+        </div>
+      </div>
+      <div class="code-area" id="s5-grid-code"></div>
+    </div>
+  </div>
+  <div class="winner-row">
+    <span class="winner-tag tie">🤝 Both handle alignment — Flex for 1D rows, Grid for 2D placement</span>
+  </div>
+</div>
+<hr class="divider">
+
+<!-- ── SECTION 6: Named Areas / Complex Layout ── -->
+<div class="section-block" id="s6">
+  <div class="section-num">06 / 08</div>
+  <div class="section-title">Complex page layout</div>
+  <div class="section-desc">Header, sidebar, main, footer. Grid defines the whole layout visually. Flex would need nested containers for each row.</div>
+  <div class="real-world"><strong>🏫 School analogy:</strong> Grid is the architect drawing the building's floor plan. Flex is arranging furniture inside each room one row at a time.</div>
+  <div class="controls-bar">
+    <div class="ctrl-group"><label>Layout:</label>
+      <select onchange="s6Update(this.value)">
+        <option value="classic" selected>Classic (sidebar left)</option>
+        <option value="rightsidebar">Sidebar right</option>
+        <option value="nosidebar">No sidebar</option>
+      </select>
+    </div>
+  </div>
+  <div class="split">
+    <div class="panel">
+      <div class="panel-header flex-head"><span class="dot"></span>Flexbox — needs nesting</div>
+      <div class="demo-area">
+        <div id="s6-flex" style="display:flex;flex-direction:column;gap:6px;min-height:180px;">
+          <div style="background:#4f46e5;color:#fff;border-radius:6px;padding:8px 12px;font-size:.78rem;font-weight:700;text-align:center;">HEADER</div>
+          <div style="display:flex;gap:6px;flex:1;">
+            <div id="s6f-side" style="background:#7c3aed;color:#fff;border-radius:6px;padding:8px;font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;width:70px;">SIDE</div>
+            <div style="background:#0891b2;color:#fff;border-radius:6px;padding:8px 12px;font-size:.78rem;font-weight:700;flex:1;display:flex;align-items:center;justify-content:center;">MAIN</div>
+          </div>
+          <div style="background:#059669;color:#fff;border-radius:6px;padding:8px 12px;font-size:.78rem;font-weight:700;text-align:center;">FOOTER</div>
+        </div>
+      </div>
+      <div class="code-area" id="s6-flex-code"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-header grid-head"><span class="dot"></span>CSS Grid — one container</div>
+      <div class="demo-area">
+        <div id="s6-grid" style="display:grid;gap:6px;min-height:180px;grid-template-areas:'h h' 's m' 'f f';grid-template-columns:70px 1fr;grid-template-rows:auto 1fr auto;">
+          <div style="grid-area:h;background:#4f46e5;color:#fff;border-radius:6px;padding:8px 12px;font-size:.78rem;font-weight:700;text-align:center;">HEADER</div>
+          <div id="s6g-side" style="grid-area:s;background:#7c3aed;color:#fff;border-radius:6px;padding:8px;font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;">SIDE</div>
+          <div style="grid-area:m;background:#0891b2;color:#fff;border-radius:6px;padding:8px 12px;font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;">MAIN</div>
+          <div style="grid-area:f;background:#059669;color:#fff;border-radius:6px;padding:8px 12px;font-size:.78rem;font-weight:700;text-align:center;">FOOTER</div>
+        </div>
+      </div>
+      <div class="code-area" id="s6-grid-code"></div>
+    </div>
+  </div>
+  <div class="winner-row">
+    <span class="winner-tag grid">🏆 Grid wins — named areas make layouts readable and maintainable</span>
+  </div>
+</div>
+<hr class="divider">
+
+<!-- ── SECTION 7: Gap ── -->
+<div class="section-block" id="s7">
+  <div class="section-num">07 / 08</div>
+  <div class="section-title">Gap between items</div>
+  <div class="section-desc"><code>gap</code> works in both! But Grid can set row-gap and column-gap independently — Flex only controls the gap along its axis.</div>
+  <div class="real-world"><strong>🏫 School analogy:</strong> Space between desks. Flex controls aisle width in a row. Grid controls both row spacing (between rows of desks) and column spacing (between desk columns) independently.</div>
+  <div class="controls-bar">
+    <div class="ctrl-group"><label>Row gap:</label>
+      <select onchange="s7Update()">
+        <option value="4px">4px</option>
+        <option value="8px">8px</option>
+        <option value="16px" selected>16px</option>
+        <option value="24px">24px</option>
+      </select>
+    </div>
+    <div class="ctrl-group"><label>Column gap:</label>
+      <select onchange="s7Update()">
+        <option value="4px">4px</option>
+        <option value="8px">8px</option>
+        <option value="16px" selected>16px</option>
+        <option value="32px">32px</option>
+      </select>
+    </div>
+  </div>
+  <div class="split">
+    <div class="panel">
+      <div class="panel-header flex-head"><span class="dot"></span>Flexbox</div>
+      <div class="demo-area"><div id="s7-flex" style="display:flex;flex-wrap:wrap;row-gap:16px;column-gap:16px;">
+        <div class="demo-cell c1" style="width:70px;height:50px;">A</div>
+        <div class="demo-cell c2" style="width:70px;height:50px;">B</div>
+        <div class="demo-cell c3" style="width:70px;height:50px;">C</div>
+        <div class="demo-cell c4" style="width:70px;height:50px;">D</div>
+        <div class="demo-cell c5" style="width:70px;height:50px;">E</div>
+        <div class="demo-cell c6" style="width:70px;height:50px;">F</div>
+      </div></div>
+      <div class="code-area" id="s7-flex-code"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-header grid-head"><span class="dot"></span>CSS Grid</div>
+      <div class="demo-area"><div id="s7-grid" style="display:grid;grid-template-columns:repeat(3,1fr);row-gap:16px;column-gap:16px;">
+        <div class="demo-cell c1" style="height:50px;">A</div>
+        <div class="demo-cell c2" style="height:50px;">B</div>
+        <div class="demo-cell c3" style="height:50px;">C</div>
+        <div class="demo-cell c4" style="height:50px;">D</div>
+        <div class="demo-cell c5" style="height:50px;">E</div>
+        <div class="demo-cell c6" style="height:50px;">F</div>
+      </div></div>
+      <div class="code-area" id="s7-grid-code"></div>
+    </div>
+  </div>
+  <div class="winner-row">
+    <span class="winner-tag tie">🤝 Both support row-gap + column-gap. Grid's two-axis control is more meaningful.</span>
+  </div>
+</div>
+<hr class="divider">
+
+<!-- ── SECTION 8: When to use which ── -->
+<div class="section-block" id="s8">
+  <div class="section-num">08 / 08</div>
+  <div class="section-title">When to use which?</div>
+  <div class="section-desc">The golden rule: Flex for content-driven 1D layouts. Grid for structure-driven 2D layouts. Most real pages use both.</div>
+  <div class="split">
+    <div class="panel">
+      <div class="panel-header flex-head"><span class="dot"></span>Use Flexbox when…</div>
+      <div class="demo-area" style="padding:20px;">
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="color:var(--flex-color);font-weight:700;font-size:1.1rem;">✓</span>
+            <span style="font-size:.85rem;line-height:1.5;">Navbar items, buttons in a row</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="color:var(--flex-color);font-weight:700;font-size:1.1rem;">✓</span>
+            <span style="font-size:.85rem;line-height:1.5;">Centering one element inside another</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="color:var(--flex-color);font-weight:700;font-size:1.1rem;">✓</span>
+            <span style="font-size:.85rem;line-height:1.5;">Items of unknown or dynamic count</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="color:var(--flex-color);font-weight:700;font-size:1.1rem;">✓</span>
+            <span style="font-size:.85rem;line-height:1.5;">Aligning icon + label side by side</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="color:var(--flex-color);font-weight:700;font-size:1.1rem;">✓</span>
+            <span style="font-size:.85rem;line-height:1.5;">Content flows in one direction only</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header grid-head"><span class="dot"></span>Use CSS Grid when…</div>
+      <div class="demo-area" style="padding:20px;">
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="color:var(--grid-color);font-weight:700;font-size:1.1rem;">✓</span>
+            <span style="font-size:.85rem;line-height:1.5;">Page layout (header, sidebar, main, footer)</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="color:var(--grid-color);font-weight:700;font-size:1.1rem;">✓</span>
+            <span style="font-size:.85rem;line-height:1.5;">Card grids with equal rows and columns</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="color:var(--grid-color);font-weight:700;font-size:1.1rem;">✓</span>
+            <span style="font-size:.85rem;line-height:1.5;">Items spanning multiple columns or rows</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="color:var(--grid-color);font-weight:700;font-size:1.1rem;">✓</span>
+            <span style="font-size:.85rem;line-height:1.5;">Layout must align on both axes</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="color:var(--grid-color);font-weight:700;font-size:1.1rem;">✓</span>
+            <span style="font-size:.85rem;line-height:1.5;">Explicit placement of items in a 2D map</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="winner-row" style="margin-top:16px;">
+    <span class="winner-tag tie" style="font-size:.85rem;padding:8px 16px;">💡 Rule of thumb: Use Grid for the page structure. Use Flex inside each section. They work best together.</span>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+<script>
+// ── THEME ──
+function toggleTheme(){
+  const r=document.documentElement;
+  r.setAttribute('data-theme',r.getAttribute('data-theme')==='dark'?'light':'dark');
+}
+
+// ── HELPERS ──
+const colors=['c1','c2','c3','c4','c5','c6'];
+const gcolors=['c1','c2','c3','c4','c5','c6'];
+function makeCell(i,cls,label){
+  const d=document.createElement('div');
+  d.className='demo-cell '+(cls||colors[i%colors.length]);
+  d.style.height='50px';
+  d.textContent=label||(String.fromCharCode(65+i));
+  return d;
+}
+function hl(code){return code;}
+
+// ── SECTION 1 ──
+function s1Update(n){
+  n=parseInt(n);
+  const fd=document.getElementById('s1-flex'),gd=document.getElementById('s1-grid');
+  fd.innerHTML='';gd.innerHTML='';
+  for(let i=0;i<n;i++){
+    fd.appendChild(makeCell(i,colors[i%6]));
+    gd.appendChild(makeCell(i,gcolors[i%6]));
+  }
+  fd.style.cssText='display:flex;gap:8px;';
+  gd.style.cssText='display:grid;grid-template-columns:repeat('+n+',1fr);gap:8px;';
+  document.getElementById('s1-flex-code').innerHTML=
+    '<span class="kw">.row</span> {\n  <span class="prop">display</span>: <span class="val">flex</span>;\n  <span class="prop">gap</span>: <span class="val">8px</span>;\n  <span style="color:#64748b;">/* items grow naturally */</span>\n}';
+  document.getElementById('s1-grid-code').innerHTML=
+    '<span class="kw">.row</span> {\n  <span class="prop">display</span>: <span class="val">grid</span>;\n  <span class="prop">grid-template-columns</span>:\n    <span class="val">repeat('+n+', 1fr)</span>;\n  <span class="prop">gap</span>: <span class="val">8px</span>;\n}';
+}
+s1Update(4);
+
+// ── SECTION 3 ──
+function s3Update(n){
+  n=parseInt(n);
+  const fd=document.getElementById('s3-flex'),gd=document.getElementById('s3-grid');
+  fd.innerHTML='';gd.innerHTML='';
+  const rows=Math.ceil(6/n);
+  for(let i=0;i<n*rows&&i<6;i++){
+    const fc=document.createElement('div');
+    fc.className='demo-cell '+colors[i%6];
+    fc.style.cssText='flex:1;min-width:0;height:50px;';
+    fc.textContent=String.fromCharCode(65+i);
+    fd.appendChild(fc);
+    gd.appendChild(makeCell(i,gcolors[i%6]));
+  }
+  fd.style.cssText='display:flex;flex-wrap:wrap;gap:8px;';
+  gd.style.cssText='display:grid;grid-template-columns:repeat('+n+',1fr);gap:8px;';
+  document.getElementById('s3-flex-code').innerHTML=
+    '<span class="kw">.item</span> {\n  <span class="prop">flex</span>: <span class="val">1</span>; <span style="color:#64748b;">/* stretch equally */</span>\n}\n<span style="color:#64748b;">/* But no guaranteed column width */</span>';
+  document.getElementById('s3-grid-code').innerHTML=
+    '<span class="kw">.container</span> {\n  <span class="prop">display</span>: <span class="val">grid</span>;\n  <span class="prop">grid-template-columns</span>:\n    <span class="val">repeat('+n+', 1fr)</span>;\n  <span style="color:#64748b;">/* Columns defined, items just fill */</span>\n}';
+}
+s3Update(3);
+
+// ── SECTION 4 ──
+let s4count=7,s4min='120px';
+function s4Update(v){s4count=parseInt(v);renderS4();}
+function s4MinUpdate(v){s4min=v;renderS4();}
+function renderS4(){
+  const fd=document.getElementById('s4-flex'),gd=document.getElementById('s4-grid');
+  fd.innerHTML='';gd.innerHTML='';
+  for(let i=0;i<s4count;i++){
+    const fc=document.createElement('div');
+    fc.className='demo-cell '+colors[i%6];
+    fc.style.cssText='flex:0 0 '+s4min+';height:50px;';
+    fc.textContent=String.fromCharCode(65+i);
+    fd.appendChild(fc);
+    gd.appendChild(makeCell(i,gcolors[i%6]));
+  }
+  fd.style.cssText='display:flex;flex-wrap:wrap;gap:8px;';
+  gd.style.cssText='display:grid;grid-template-columns:repeat(auto-fill,minmax('+s4min+',1fr));gap:8px;';
+  document.getElementById('s4-flex-code').innerHTML=
+    '<span class="kw">.item</span> {\n  <span class="prop">flex</span>: <span class="val">0 0 '+s4min+'</span>;\n}\n<span class="kw">.container</span> {\n  <span class="prop">display</span>: <span class="val">flex</span>;\n  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;\n}';
+  document.getElementById('s4-grid-code').innerHTML=
+    '<span class="kw">.container</span> {\n  <span class="prop">display</span>: <span class="val">grid</span>;\n  <span class="prop">grid-template-columns</span>:\n    <span class="val">repeat(auto-fill,\n      minmax('+s4min+', 1fr))</span>;\n}';
+}
+renderS4();
+
+// ── SECTION 5 ──
+function s5Update(){
+  const sels=document.querySelectorAll('#s5 select');
+  const jc=sels[0].value,ai=sels[1].value;
+  const fd=document.getElementById('s5-flex'),gd=document.getElementById('s5-grid');
+  fd.style.justifyContent=jc;
+  fd.style.alignItems=ai;
+  // Grid: map flex values to grid equivalents
+  const gj=jc.replace('flex-start','start').replace('flex-end','end').replace('space-between','space-between');
+  const ga=ai.replace('flex-start','start').replace('flex-end','end');
+  gd.style.justifyItems=gj;
+  gd.style.alignItems=ga;
+  document.getElementById('s5-flex-code').innerHTML=
+    '<span class="kw">.container</span> {\n  <span class="prop">display</span>: <span class="val">flex</span>;\n  <span class="prop">justify-content</span>: <span class="val">'+jc+'</span>;\n  <span class="prop">align-items</span>: <span class="val">'+ai+'</span>;\n}';
+  document.getElementById('s5-grid-code').innerHTML=
+    '<span class="kw">.container</span> {\n  <span class="prop">display</span>: <span class="val">grid</span>;\n  <span class="prop">grid-template-columns</span>:\n    <span class="val">repeat(3, 1fr)</span>;\n  <span class="prop">justify-items</span>: <span class="val">'+gj+'</span>;\n  <span class="prop">align-items</span>: <span class="val">'+ga+'</span>;\n}';
+}
+s5Update();
+
+// ── SECTION 6 ──
+function s6Update(v){
+  const fg=document.getElementById('s6-flex');
+  const gg=document.getElementById('s6-grid');
+  const fside=document.getElementById('s6f-side');
+  const gside=document.getElementById('s6g-side');
+  let areas,cols,fcode,gcode;
+  if(v==='classic'){
+    areas='"h h" "s m" "f f"';cols='70px 1fr';
+    fside.style.cssText='background:#7c3aed;color:#fff;border-radius:6px;padding:8px;font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;width:70px;';
+    gside.style.cssText='grid-area:s;background:#7c3aed;color:#fff;border-radius:6px;padding:8px;font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;';
+    fcode='Sidebar left:\n.container > .row { display:flex }\n.sidebar { width:70px }\n.main { flex:1 }';
+    gcode='.container {\n  display:grid;\n  grid-template-areas:\n    "h h" "s m" "f f";\n  grid-template-columns:\n    70px 1fr;\n}';
+  } else if(v==='rightsidebar'){
+    areas='"h h" "m s" "f f"';cols='1fr 70px';
+    fside.style.cssText='background:#7c3aed;color:#fff;border-radius:6px;padding:8px;font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;width:70px;order:2;';
+    gside.style.cssText='grid-area:s;background:#7c3aed;color:#fff;border-radius:6px;padding:8px;font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;';
+    fcode='Sidebar right:\n.row { display:flex }\n.sidebar { order:2; width:70px }\n.main { flex:1; order:1 }';
+    gcode='.container {\n  grid-template-areas:\n    "h h" "m s" "f f";\n  grid-template-columns:\n    1fr 70px;\n}';
+  } else {
+    areas='"h" "m" "f"';cols='1fr';
+    fside.style.cssText='display:none;';
+    gside.style.cssText='display:none;';
+    fcode='No sidebar:\nRemove sidebar element from HTML.\nFlex row has only main.';
+    gcode='.container {\n  grid-template-areas:\n    "h" "m" "f";\n  grid-template-columns: 1fr;\n}';
+  }
+  gg.style.gridTemplateAreas=areas;
+  gg.style.gridTemplateColumns=cols;
+  document.getElementById('s6-flex-code').innerHTML='<span style="color:#64748b;">'+fcode+'</span>';
+  document.getElementById('s6-grid-code').innerHTML='<span class="kw">.container</span> {\n  <span class="prop">display</span>: <span class="val">grid</span>;\n  <span class="prop">grid-template-areas</span>:\n    <span class="val">'+areas.replace(/"/g,'&quot;')+'</span>;\n  <span class="prop">grid-template-columns</span>:\n    <span class="val">'+cols+'</span>;\n}';
+}
+s6Update('classic');
+
+// ── SECTION 7 ──
+function s7Update(){
+  const sels=document.querySelectorAll('#s7 select');
+  const rg=sels[0].value,cg=sels[1].value;
+  document.getElementById('s7-flex').style.rowGap=rg;
+  document.getElementById('s7-flex').style.columnGap=cg;
+  document.getElementById('s7-grid').style.rowGap=rg;
+  document.getElementById('s7-grid').style.columnGap=cg;
+  document.getElementById('s7-flex-code').innerHTML=
+    '<span class="kw">.row</span> {\n  <span class="prop">display</span>: <span class="val">flex</span>;\n  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;\n  <span class="prop">row-gap</span>: <span class="val">'+rg+'</span>;\n  <span class="prop">column-gap</span>: <span class="val">'+cg+'</span>;\n}';
+  document.getElementById('s7-grid-code').innerHTML=
+    '<span class="kw">.grid</span> {\n  <span class="prop">display</span>: <span class="val">grid</span>;\n  <span class="prop">grid-template-columns</span>:\n    <span class="val">repeat(3, 1fr)</span>;\n  <span class="prop">row-gap</span>: <span class="val">'+rg+'</span>;\n  <span class="prop">column-gap</span>: <span class="val">'+cg+'</span>;\n}';
+}
+s7Update();
+</script>
+<p>Created by Rishop Babu</p>
+</body></html>
