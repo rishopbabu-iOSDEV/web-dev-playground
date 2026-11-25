@@ -1,44 +1,67 @@
 # Web Development Playground
 
-Hands-on learning playgrounds for web fundamentals: HTML/CSS, JavaScript, MySQL, APIs and Python. Most are standalone single-file HTML pages with no build step or dependencies: open one in a browser. The API starter and the Python course have a few extra notes below.
+A collection of hands-on learning playgrounds for web development, built alongside my SIU coursework. Each playground lets you experiment with a topic directly in the browser: change a value, see the result, and learn by doing.
+
+Most playgrounds are standalone single-file HTML pages with no build step and no dependencies. Open the file in a browser and it works. The exceptions are the API starter (runs on your own machine) and the Python course (loads Pyodide from a CDN).
+
+## Repository structure
+
+```
+web-dev-playground/
+├── HTML-CSS/            Layout and markup playgrounds
+├── JavaScript/          JavaScript practice playground
+├── MySQL/               Database and SQL playground
+├── API/                 API fundamentals playground + runnable starter project
+└── python-zero-to-oop/  Browser-based Python course
+```
 
 ## Contents
 
 ### HTML-CSS
-- `CSS Grid Playground.html`: experiment with CSS Grid properties
-- `Flexbox Playground.html`: experiment with Flexbox properties
-- `Flex vs Grid — Side-by-Side Playground.html`: compare both layout models
-- `html-tags-attributes.html`: HTML tags and attributes reference
+| File | What it covers |
+|---|---|
+| `CSS Grid Playground.html` | Experiment with CSS Grid properties |
+| `Flexbox Playground.html` | Experiment with Flexbox properties |
+| `Flex vs Grid — Side-by-Side Playground.html` | Compare both layout models |
+| `html-tags-attributes.html` | HTML tags and attributes reference |
 
 ### JavaScript
-- `Chai Corner JS Playground.html`: JavaScript practice playground
+| File | What it covers |
+|---|---|
+| `Chai Corner JS Playground.html` | JavaScript practice playground |
 
 ### MySQL
-- `Structured Database Playground (MySQL).html`: practice structured databases and SQL
+| File | What it covers |
+|---|---|
+| `Structured Database Playground (MySQL).html` | Structured databases and SQL practice |
 
 ### API
-- `API Fundamentals Playground.html`: APIs and web data (Python runs in the browser against a practice database)
-- `starter/`: the real, runnable version for your own machine (FastAPI + MySQL, `.http` request files, resume and contact pages). See [API/starter/README.md](API/starter/README.md).
+| Item | What it covers |
+|---|---|
+| `API Fundamentals Playground.html` | APIs and web data. Python runs in the browser against a practice database |
+| `starter/` | The real, runnable version for your own machine: FastAPI + MySQL, `.http` request files, and resume/contact pages. See [API/starter/README.md](API/starter/README.md) |
 
 ### python-zero-to-oop
-- A browser-based Python course: 15 lessons from `print()` to classes, with 48 auto-checked practice problems. Python runs in the browser (Pyodide). Needs an internet connection. See [python-zero-to-oop/README.md](python-zero-to-oop/README.md).
+A browser-based Python course: 15 lessons from `print()` to classes, with animations, a step-through viewer and 48 auto-checked practice problems. Python runs in the browser (Pyodide), so no server is needed, but an internet connection is. See [python-zero-to-oop/README.md](python-zero-to-oop/README.md).
 
-## Usage
+## Getting started
 
 ```bash
 git clone <repo-url>
+cd web-dev-playground
 open "HTML-CSS/Flexbox Playground.html"
 ```
 
-For the API starter (Python 3, MySQL):
+To run the API starter (Python 3 and MySQL required):
 
 ```bash
 cd API/starter
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env   # fill in your values
+cp .env.example .env   # then fill in your values
+cd api && fastapi dev main.py
 ```
 
 ## Secrets
 
-`.env` files are git-ignored. Only the `.env.example` templates are committed; never commit real credentials or API keys.
+`.env` files are git-ignored. Only the `.env.example` templates are committed. Never commit real credentials or API keys.
