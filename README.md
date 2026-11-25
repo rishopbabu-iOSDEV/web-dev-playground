@@ -52,11 +52,11 @@ cd web-dev-playground
 open "HTML-CSS/Flexbox Playground.html"
 ```
 
-To run the API starter (Python 3 and MySQL required):
+To run the API starter (Python 3.12 or 3.13 and MySQL required; 3.15 is not supported by `mysql-connector-python`):
 
 ```bash
 cd API/starter
-python -m venv .venv && source .venv/bin/activate
+python3.13 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env   # then fill in your values
 cd api && fastapi dev main.py

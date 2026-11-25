@@ -4,8 +4,10 @@ Everything in the **API Fundamentals Playground** has a real, runnable version h
 
 ## Setup
 
+**Use Python 3.12 or 3.13.** Python 3.15 breaks `mysql-connector-python` (`AttributeError: module 'ssl' has no attribute 'PROTOCOL_TLSv1'`), so create the venv with an older interpreter, e.g. `python3.13 -m venv .venv`.
+
 ```
-python -m venv .venv
+python3.13 -m venv .venv      # or python3.12; avoid 3.15
 .venv\Scripts\activate        # macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
 copy .env.example .env        # macOS/Linux: cp .env.example .env   then fill in the values
