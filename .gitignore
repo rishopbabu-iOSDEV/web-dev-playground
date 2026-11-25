@@ -1,5 +1,27 @@
+# OS / editor
 .DS_Store
-node_modules/
+Thumbs.db
+.idea/
+.vscode/
+
+# Tools
 .serena/
 .claude/
+
+# Logs
 *.log
+
+# Node
+node_modules/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Secrets: never commit real env files (keep the .env.example templates)
+.env
+.env.*
+!.env.example

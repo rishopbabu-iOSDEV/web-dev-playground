@@ -1,0 +1,150 @@
+# module-07.http: write requests W01-W16 (VS Code "REST Client" extension).
+# Use @example.com addresses only. Messages are personal data, even in a lab.
+# NOTE: reconstructed by the playground author from the course's write-test list; yours wins if it differs.
+@base = http://127.0.0.1:8000
+# From Module 8 the owner requests also need:  X-API-Key: {{key}}
+@key = your-owner-key-from-.env
+
+### W01 A valid message -> 201, Location header, {id, sent_at}
+POST {{base}}/api/messages
+Content-Type: application/json
+
+{ "name": "Ravi Kumar", "email": "ravi@example.com", "message": "Hello from the lab" }
+
+### W02 No email key -> 422
+POST {{base}}/api/messages
+Content-Type: application/json
+
+{ "name": "Ravi Kumar", "message": "Hello" }
+
+### W03 "ravi-at-example" -> 422
+POST {{base}}/api/messages
+Content-Type: application/json
+
+{ "name": "Ravi Kumar", "email": "ravi-at-example", "message": "Hello" }
+
+### W04 message of three spaces -> 422 (str_strip_whitespace turns it into "")
+POST {{base}}/api/messages
+Content-Type: application/json
+
+{ "name": "Ravi Kumar", "email": "ravi@example.com", "message": "   " }
+
+### W05 Read messages (newest first, is_read is false not 0)
+GET {{base}}/api/messages
+X-API-Key: {{key}}
+
+### W06 Mark message 1 read (send it twice: 200 both times)
+PATCH {{base}}/api/messages/1
+Content-Type: application/json
+X-API-Key: {{key}}
+
+{ "is_read": true }
+
+### W07 Mark a message that is not there -> 404
+PATCH {{base}}/api/messages/99999
+Content-Type: application/json
+X-API-Key: {{key}}
+
+{ "is_read": true }
+
+### W08 Delete message 1 -> 204, no body
+DELETE {{base}}/api/messages/1
+X-API-Key: {{key}}
+
+### W09 Delete it again -> 404
+DELETE {{base}}/api/messages/1
+X-API-Key: {{key}}
+
+### W10 Change only a description -> 200 (restore it afterwards)
+PATCH {{base}}/api/projects/14
+Content-Type: application/json
+X-API-Key: {{key}}
+
+{ "description": "Rolled out to the whole company." }
+
+### W11 Give project 1 project 2's name -> 409
+PATCH {{base}}/api/projects/1
+Content-Type: application/json
+X-API-Key: {{key}}
+
+{ "project_name": "Branch Banking Portal" }
+
+### W12a An empty PATCH -> 422
+PATCH {{base}}/api/projects/1
+Content-Type: application/json
+X-API-Key: {{key}}
+
+{}
+
+### W12b A field that does not exist -> 422 (extra="forbid")
+PATCH {{base}}/api/projects/1
+Content-Type: application/json
+X-API-Key: {{key}}
+
+{ "budget": 5 }
+
+### W13 Appointment, end BEFORE start -> 422 and NOTHING is left behind
+POST {{base}}/api/appointments
+Content-Type: application/json
+X-API-Key: {{key}}
+
+{
+  "company_name": "Kestrel Ridge Analytics",
+  "role_title": "Non-Executive Director",
+  "start_date": "2026-06-01",
+  "end_date": "2026-05-31",
+  "project_name": "Acquisition technology due diligence",
+  "skill_ids": [17],
+  "headline": "Former Chief Technology Officer | Non-Executive Director, Kestrel Ridge Analytics"
+}
+
+### W14 The board appointment -> 201 with FOUR ids; then GET /api/summary -> 8 / 18 / 17 / 17 / 19 / 43.0
+POST {{base}}/api/appointments
+Content-Type: application/json
+X-API-Key: {{key}}
+
+{
+  "company_name": "Kestrel Ridge Analytics",
+  "role_title": "Non-Executive Director",
+  "start_date": "2026-06-01",
+  "end_date": "2029-05-31",
+  "project_name": "Acquisition technology due diligence",
+  "skill_ids": [17],
+  "headline": "Former Chief Technology Officer | Non-Executive Director, Kestrel Ridge Analytics"
+}
+
+### W15 Send W14 again -> 409, summary unchanged
+POST {{base}}/api/appointments
+Content-Type: application/json
+X-API-Key: {{key}}
+
+{
+  "company_name": "Kestrel Ridge Analytics",
+  "role_title": "Non-Executive Director",
+  "start_date": "2026-06-01",
+  "end_date": "2029-05-31",
+  "project_name": "Acquisition technology due diligence",
+  "skill_ids": [17],
+  "headline": "Former Chief Technology Officer | Non-Executive Director, Kestrel Ridge Analytics"
+}
+
+### W16 (stretch) A skill that does not exist -> predict 1452 -> 422, nothing left behind
+POST {{base}}/api/appointments
+Content-Type: application/json
+X-API-Key: {{key}}
+
+{
+  "company_name": "Zed Labs",
+  "role_title": "Advisor",
+  "start_date": "2026-06-01",
+  "end_date": "2027-05-31",
+  "project_name": "Zed advisory",
+  "skill_ids": [99]
+}
+
+### Extra: PUT is not in our spec -> 405 with an Allow header
+PUT {{base}}/api/messages/1
+Content-Type: application/json
+X-API-Key: {{key}}
+
+{ "is_read": true }

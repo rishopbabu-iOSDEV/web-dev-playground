@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact (Module 9 demo page)</title>
+  <style>
+    body { font: 16px/1.5 system-ui, sans-serif; max-width: 34rem; margin: 1.5rem auto; padding: 0 1rem; }
+    label { display: block; margin-top: .8rem; font-weight: 600; }
+    input, textarea { width: 100%; padding: .4rem; font: inherit; box-sizing: border-box; }
+    [aria-invalid="true"] { border: 2px solid #b3261e; }
+    .error { display: none; color: #b3261e; font-size: .85rem; }
+    .error.show { display: block; }
+    fieldset { border: 0; padding: 0; margin: 0; }
+  </style>
+</head>
+<body>
+  <h1>Send a message</h1>
+  <form id="contact-form" novalidate>
+    <fieldset>
+      <label for="name">Name</label>
+      <input id="name" name="name" autocomplete="name" maxlength="100">
+      <span class="error" id="name-error">Please enter your name.</span>
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" maxlength="254">
+      <span class="error" id="email-error">Please enter a valid email address.</span>
+
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="5" maxlength="2000"></textarea>
+      <span class="error" id="message-error">Please write a message.</span>
+
+      <p><button id="send" type="submit">Send</button></p>
+    </fieldset>
+    <p id="form-status" role="status" aria-live="polite"></p>
+  </form>
+  <p><a href="resume.html">Back to the resume</a></p>
+
+  <script src="js/config.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/contact.js" defer></script>
+</body>
+</html>

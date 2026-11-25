@@ -1,0 +1,6 @@
+# Module 5: mysql-connector-python, python-dotenv
+# Module 6: fastapi[standard]   (FastAPI + Uvicorn + the `fastapi` command + httpx + email-validator)
+# Run `pip freeze > requirements.txt` after installing to pin exact versions, then commit this file.
+mysql-connector-python
+python-dotenv
+fastapi[standard]

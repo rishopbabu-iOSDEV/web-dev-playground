@@ -1,0 +1,50 @@
+# module-04.http: acceptance requests A01-A15 (VS Code "REST Client" extension).
+# Click "Send Request" above any ### line. Start the API first:  cd api && fastapi dev main.py
+# NOTE: reconstructed by the playground author from the course's acceptance list. If your own
+# module-04.http from Module 4 differs, yours wins.
+@base = http://127.0.0.1:8000
+
+### A01 All awards -> 200, 19 items, X-Total-Count 19
+GET {{base}}/api/awards
+
+### A02 Industry awards -> 200, 7 items
+GET {{base}}/api/awards?category=Industry
+
+### A03 Bad category -> 422
+GET {{base}}/api/awards?category=Personal
+
+### A04 One education entry -> 200 (the B.E.)
+GET {{base}}/api/education/1
+
+### A05 Missing education entry -> 404
+GET {{base}}/api/education/99
+
+### A06 From 2020 -> 200, 7 items
+GET {{base}}/api/awards?year_from=2020
+
+### A07 limit too big -> 422
+GET {{base}}/api/awards?limit=500
+
+### A08 Page 2, limit 5 -> 5 items, X-Total-Count 19
+GET {{base}}/api/awards?page=2&limit=5
+
+### A09 Experience at one company -> 4
+GET {{base}}/api/experience?company=CloudHarbor%20Software
+
+### A10 Projects by skill -> 8 rows, skills is an ARRAY
+GET {{base}}/api/projects?skill=Platform%20migration
+
+### A11 Skills with no evidence -> 2
+GET {{base}}/api/skills?evidenced=false
+
+### A12 The whole resume -> 17 roles, no "@" anywhere
+GET {{base}}/api/resume
+
+### A13 Summary -> 7 / 17 / 16 / 17 / 19 / 40.0
+GET {{base}}/api/summary
+
+### A14 Wrong method -> 405 with an Allow header
+DELETE {{base}}/api/summary
+
+### A15 Messages with no key -> 401 (Module 8; today 404, then 200 after Module 7: still a FAIL)
+GET {{base}}/api/messages

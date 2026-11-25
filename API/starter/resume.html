@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resume (Module 9 demo page)</title>
+  <style>
+    body { font: 16px/1.5 system-ui, sans-serif; max-width: 46rem; margin: 1.5rem auto; padding: 0 1rem; }
+    .source { color: #555; font-size: .9rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: .3rem; list-style: none; padding: 0; }
+    .tag { background: #e8f1ee; border-radius: 1rem; padding: 0 .6rem; font-size: .8rem; }
+    [role="status"] { min-height: 1.4em; color: #8a4b00; }
+  </style>
+</head>
+<body>
+  <h1 id="profile-name">Loading…</h1>
+  <p id="profile-headline"></p>
+  <p class="source" id="data-source" aria-live="polite"></p>
+  <p id="resume-status" role="status"></p>
+
+  <h2>Experience</h2><ul id="experience"></ul>
+  <h2>Projects</h2><ul id="projects"></ul>
+
+  <h2>Awards</h2>
+  <p id="awards-status" role="status"></p>
+  <ul id="awards"></ul>
+  <p><button id="awards-prev">Previous</button> <span id="awards-pager"></span> <button id="awards-next">Next</button></p>
+
+  <h2>GitHub</h2>
+  <div id="github-card"></div><p id="github-status" role="status"></p>
+
+  <p><a href="contact.html">Contact</a></p>
+
+  <!-- order matters: config first, then api, then the page scripts (defer keeps this order) -->
+  <script src="js/config.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/resume.js" defer></script>
+  <script src="js/github.js" defer></script>
+</body>
+</html>

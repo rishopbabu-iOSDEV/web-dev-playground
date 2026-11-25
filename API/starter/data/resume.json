@@ -1,0 +1,612 @@
+{
+  "generated_at": "2026-11-16",
+  "profile": {
+    "full_name": "Ananya Rao",
+    "headline": "Former CTO · Platform and AI product leader",
+    "location": "Bengaluru, India",
+    "summary": "Forty years building software platforms and the teams that run them, from a first job as an engineer to chief technology officer of a 1,800-person organisation."
+  },
+  "summary": {
+    "companies": 7,
+    "roles": 17,
+    "projects": 16,
+    "skills": 17,
+    "awards": 19,
+    "career_years": 40
+  },
+  "experience": [
+    {
+      "id": 1,
+      "company": "Kaveri Infotech",
+      "role": "Software Engineer",
+      "start_date": "1986-07-01",
+      "end_date": "1989-03-31",
+      "team_size": null
+    },
+    {
+      "id": 2,
+      "company": "Kaveri Infotech",
+      "role": "Senior Software Engineer",
+      "start_date": "1989-04-01",
+      "end_date": "1992-01-31",
+      "team_size": 6
+    },
+    {
+      "id": 3,
+      "company": "Kaveri Infotech",
+      "role": "Technical Lead",
+      "start_date": "1992-02-01",
+      "end_date": "1994-05-31",
+      "team_size": 12
+    },
+    {
+      "id": 4,
+      "company": "Bluepeak Systems",
+      "role": "Project Manager",
+      "start_date": "1994-06-01",
+      "end_date": "1996-12-31",
+      "team_size": 18
+    },
+    {
+      "id": 5,
+      "company": "Bluepeak Systems",
+      "role": "Senior Project Manager",
+      "start_date": "1997-01-01",
+      "end_date": "1999-06-30",
+      "team_size": 35
+    },
+    {
+      "id": 6,
+      "company": "Bluepeak Systems",
+      "role": "Delivery Head",
+      "start_date": "1999-07-01",
+      "end_date": "2001-08-31",
+      "team_size": 60
+    },
+    {
+      "id": 7,
+      "company": "Orbit Labs",
+      "role": "Engineering Manager",
+      "start_date": "2001-09-01",
+      "end_date": "2003-02-28",
+      "team_size": 45
+    },
+    {
+      "id": 8,
+      "company": "Orbit Labs",
+      "role": "Director, Engineering",
+      "start_date": "2003-03-01",
+      "end_date": "2004-12-31",
+      "team_size": 90
+    },
+    {
+      "id": 9,
+      "company": "CloudHarbor Software",
+      "role": "Senior Director, Engineering",
+      "start_date": "2005-01-01",
+      "end_date": "2006-06-30",
+      "team_size": null
+    },
+    {
+      "id": 10,
+      "company": "CloudHarbor Software",
+      "role": "Director, Platform",
+      "start_date": "2006-07-01",
+      "end_date": "2008-03-31",
+      "team_size": 120
+    },
+    {
+      "id": 11,
+      "company": "CloudHarbor Software",
+      "role": "Vice President, Platform",
+      "start_date": "2008-04-01",
+      "end_date": "2010-02-28",
+      "team_size": 210
+    },
+    {
+      "id": 12,
+      "company": "CloudHarbor Software",
+      "role": "Vice President, Engineering",
+      "start_date": "2010-03-01",
+      "end_date": "2011-12-31",
+      "team_size": 260
+    },
+    {
+      "id": 13,
+      "company": "NexaCollab",
+      "role": "VP, Product Engineering",
+      "start_date": "2012-01-01",
+      "end_date": "2013-09-30",
+      "team_size": 300
+    },
+    {
+      "id": 14,
+      "company": "NexaCollab",
+      "role": "Head of Engineering",
+      "start_date": "2013-10-01",
+      "end_date": "2014-08-31",
+      "team_size": 340
+    },
+    {
+      "id": 15,
+      "company": "Aster Data Platforms",
+      "role": "SVP, Engineering",
+      "start_date": "2014-09-01",
+      "end_date": "2017-06-30",
+      "team_size": 410
+    },
+    {
+      "id": 16,
+      "company": "Aster Data Platforms",
+      "role": "Chief Product & Tech. Officer",
+      "start_date": "2017-07-01",
+      "end_date": "2021-05-31",
+      "team_size": 950
+    },
+    {
+      "id": 17,
+      "company": "Lumina Software",
+      "role": "Chief Technology Officer",
+      "start_date": "2021-06-01",
+      "end_date": "2026-05-31",
+      "team_size": 1800
+    }
+  ],
+  "projects": [
+    {
+      "project_id": 1,
+      "project": "Billing Engine Rewrite",
+      "role": "Senior Software Engineer",
+      "company": "Kaveri Infotech",
+      "skills": [
+        "Platform migration",
+        "Payments"
+      ]
+    },
+    {
+      "project_id": 2,
+      "project": "Branch Banking Portal",
+      "role": "Technical Lead",
+      "company": "Kaveri Infotech",
+      "skills": [
+        "Payments",
+        "Compliance"
+      ]
+    },
+    {
+      "project_id": 3,
+      "project": "Telecom Provisioning Suite",
+      "role": "Project Manager",
+      "company": "Bluepeak Systems",
+      "skills": [
+        "Program management",
+        "Vendor management"
+      ]
+    },
+    {
+      "project_id": 4,
+      "project": "Y2K Readiness Programme",
+      "role": "Senior Project Manager",
+      "company": "Bluepeak Systems",
+      "skills": [
+        "Program management",
+        "Compliance"
+      ]
+    },
+    {
+      "project_id": 4,
+      "project": "Y2K Readiness Programme",
+      "role": "Delivery Head",
+      "company": "Bluepeak Systems",
+      "skills": [
+        "Program management",
+        "Compliance"
+      ]
+    },
+    {
+      "project_id": 5,
+      "project": "Offshore Delivery Centre",
+      "role": "Engineering Manager",
+      "company": "Orbit Labs",
+      "skills": [
+        "Hiring & org design",
+        "Program management"
+      ]
+    },
+    {
+      "project_id": 6,
+      "project": "Search Relevance Overhaul",
+      "role": "Director, Engineering",
+      "company": "Orbit Labs",
+      "skills": [
+        "Search & relevance",
+        "Data platforms"
+      ]
+    },
+    {
+      "project_id": 7,
+      "project": "Data Centre Consolidation",
+      "role": "Director, Platform",
+      "company": "CloudHarbor Software",
+      "skills": [
+        "Cloud architecture",
+        "Platform migration"
+      ]
+    },
+    {
+      "project_id": 8,
+      "project": "Cloud Migration Wave 1",
+      "role": "Vice President, Platform",
+      "company": "CloudHarbor Software",
+      "skills": [
+        "Cloud architecture",
+        "Platform migration"
+      ]
+    },
+    {
+      "project_id": 8,
+      "project": "Cloud Migration Wave 1",
+      "role": "Vice President, Engineering",
+      "company": "CloudHarbor Software",
+      "skills": [
+        "Cloud architecture",
+        "Platform migration"
+      ]
+    },
+    {
+      "project_id": 9,
+      "project": "Collaboration Suite 2.0",
+      "role": "VP, Product Engineering",
+      "company": "NexaCollab",
+      "skills": [
+        "Mobile engineering",
+        "Developer experience"
+      ]
+    },
+    {
+      "project_id": 10,
+      "project": "Mobile-first Rebuild",
+      "role": "Head of Engineering",
+      "company": "NexaCollab",
+      "skills": [
+        "Mobile engineering",
+        "Platform migration"
+      ]
+    },
+    {
+      "project_id": 11,
+      "project": "Data Platform Launch",
+      "role": "SVP, Engineering",
+      "company": "Aster Data Platforms",
+      "skills": [
+        "Data platforms",
+        "Cloud architecture"
+      ]
+    },
+    {
+      "project_id": 12,
+      "project": "Analytics Marketplace",
+      "role": "Chief Product & Tech. Officer",
+      "company": "Aster Data Platforms",
+      "skills": [
+        "Data platforms",
+        "Platform migration"
+      ]
+    },
+    {
+      "project_id": 13,
+      "project": "Platform Renewal",
+      "role": "Chief Technology Officer",
+      "company": "Lumina Software",
+      "skills": [
+        "Platform migration",
+        "Cloud architecture",
+        "Budgeting"
+      ]
+    },
+    {
+      "project_id": 14,
+      "project": "Enterprise Assistant Deployment",
+      "role": "Chief Technology Officer",
+      "company": "Lumina Software",
+      "skills": [
+        "Product security",
+        "AI product governance",
+        "Executive communication"
+      ]
+    },
+    {
+      "project_id": 15,
+      "project": "Security Posture Programme",
+      "role": "Chief Product & Tech. Officer",
+      "company": "Aster Data Platforms",
+      "skills": [
+        "Product security",
+        "Compliance"
+      ]
+    },
+    {
+      "project_id": 16,
+      "project": "Developer Experience Platform",
+      "role": "Senior Director, Engineering",
+      "company": "CloudHarbor Software",
+      "skills": [
+        "Developer experience",
+        "Platform migration"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "id": 1,
+      "skill": "Platform migration",
+      "category": "Engineering",
+      "project_count": 7
+    },
+    {
+      "id": 2,
+      "skill": "Site reliability",
+      "category": "Engineering",
+      "project_count": 0
+    },
+    {
+      "id": 3,
+      "skill": "Cloud architecture",
+      "category": "Engineering",
+      "project_count": 4
+    },
+    {
+      "id": 4,
+      "skill": "Data platforms",
+      "category": "Engineering",
+      "project_count": 3
+    },
+    {
+      "id": 5,
+      "skill": "Mobile engineering",
+      "category": "Engineering",
+      "project_count": 2
+    },
+    {
+      "id": 6,
+      "skill": "Search & relevance",
+      "category": "Engineering",
+      "project_count": 1
+    },
+    {
+      "id": 7,
+      "skill": "Developer experience",
+      "category": "Engineering",
+      "project_count": 2
+    },
+    {
+      "id": 8,
+      "skill": "Payments",
+      "category": "Domain",
+      "project_count": 2
+    },
+    {
+      "id": 9,
+      "skill": "Compliance",
+      "category": "Domain",
+      "project_count": 3
+    },
+    {
+      "id": 10,
+      "skill": "Product security",
+      "category": "Security",
+      "project_count": 2
+    },
+    {
+      "id": 11,
+      "skill": "AI product governance",
+      "category": "Governance",
+      "project_count": 1
+    },
+    {
+      "id": 12,
+      "skill": "Program management",
+      "category": "Leadership",
+      "project_count": 3
+    },
+    {
+      "id": 13,
+      "skill": "Hiring & org design",
+      "category": "Leadership",
+      "project_count": 1
+    },
+    {
+      "id": 14,
+      "skill": "Vendor management",
+      "category": "Leadership",
+      "project_count": 1
+    },
+    {
+      "id": 15,
+      "skill": "Executive communication",
+      "category": "Leadership",
+      "project_count": 1
+    },
+    {
+      "id": 16,
+      "skill": "Budgeting",
+      "category": "Leadership",
+      "project_count": 1
+    },
+    {
+      "id": 17,
+      "skill": "Strategy & roadmapping",
+      "category": "Leadership",
+      "project_count": 0
+    }
+  ],
+  "education": [
+    {
+      "id": 1,
+      "qualification": "B.E. Computer Science",
+      "institution": "Cauvery Institute of Technology",
+      "type": "Degree",
+      "start_year": 1982,
+      "end_year": 1986
+    },
+    {
+      "id": 2,
+      "qualification": "Post-graduate Diploma in Management",
+      "institution": "Southern School of Management",
+      "type": "Diploma",
+      "start_year": 1997,
+      "end_year": 1999
+    },
+    {
+      "id": 3,
+      "qualification": "Executive Programme in Technology Leadership",
+      "institution": "Himalaya Institute of Management",
+      "type": "Certificate",
+      "start_year": 2012,
+      "end_year": 2012
+    },
+    {
+      "id": 4,
+      "qualification": "Certificate in AI Governance",
+      "institution": "Southern School of Management",
+      "type": "Certificate",
+      "start_year": 2025,
+      "end_year": 2025
+    }
+  ],
+  "awards": [
+    {
+      "id": 1,
+      "award": "Chairman's Award for Platform Renewal",
+      "awarded_by": "Lumina Software",
+      "year": 2026,
+      "category": "Company"
+    },
+    {
+      "id": 2,
+      "award": "Technology Leader of the Year",
+      "awarded_by": "South India CIO Forum",
+      "year": 2024,
+      "category": "Industry"
+    },
+    {
+      "id": 3,
+      "award": "Engineering Excellence Award",
+      "awarded_by": "Aster Data Platforms",
+      "year": 2020,
+      "category": "Company"
+    },
+    {
+      "id": 4,
+      "award": "Women in Technology Leadership Award",
+      "awarded_by": "Tech Leaders Council",
+      "year": 2019,
+      "category": "Industry"
+    },
+    {
+      "id": 5,
+      "award": "Platform Pioneer Award",
+      "awarded_by": "CloudHarbor Software",
+      "year": 2009,
+      "category": "Company"
+    },
+    {
+      "id": 6,
+      "award": "Innovation Patent Recognition",
+      "awarded_by": "NexaCollab",
+      "year": 2013,
+      "category": "Company"
+    },
+    {
+      "id": 7,
+      "award": "CTO of the Year (Enterprise)",
+      "awarded_by": "National Software Association",
+      "year": 2023,
+      "category": "Industry"
+    },
+    {
+      "id": 8,
+      "award": "Mentor of the Year",
+      "awarded_by": "Aster Data Platforms",
+      "year": 2018,
+      "category": "Company"
+    },
+    {
+      "id": 9,
+      "award": "Volunteer of the Year",
+      "awarded_by": "Bengaluru Coding Kids",
+      "year": 2022,
+      "category": "Community"
+    },
+    {
+      "id": 10,
+      "award": "Best Engineering Team",
+      "awarded_by": "NexaCollab",
+      "year": 2012,
+      "category": "Company"
+    },
+    {
+      "id": 11,
+      "award": "Open Source Contributor Recognition",
+      "awarded_by": "Community Code Collective",
+      "year": 2021,
+      "category": "Community"
+    },
+    {
+      "id": 12,
+      "award": "Leadership Excellence",
+      "awarded_by": "CloudHarbor Software",
+      "year": 2011,
+      "category": "Company"
+    },
+    {
+      "id": 13,
+      "award": "Industry Pioneer Award",
+      "awarded_by": "Cloud Computing Forum India",
+      "year": 2016,
+      "category": "Industry"
+    },
+    {
+      "id": 14,
+      "award": "Outstanding Delivery Award",
+      "awarded_by": "Bluepeak Systems",
+      "year": 1998,
+      "category": "Company"
+    },
+    {
+      "id": 15,
+      "award": "Speaker of the Year",
+      "awarded_by": "DevSummit India",
+      "year": 2017,
+      "category": "Industry"
+    },
+    {
+      "id": 16,
+      "award": "Digital Infrastructure Award",
+      "awarded_by": "Indian Software Council",
+      "year": 2014,
+      "category": "Industry"
+    },
+    {
+      "id": 17,
+      "award": "STEM Mentor Award",
+      "awarded_by": "Girls Who Build Foundation",
+      "year": 2025,
+      "category": "Community"
+    },
+    {
+      "id": 18,
+      "award": "Top Performer",
+      "awarded_by": "Kaveri Infotech",
+      "year": 1991,
+      "category": "Company"
+    },
+    {
+      "id": 19,
+      "award": "Quality Champion Award",
+      "awarded_by": "Software Quality Forum",
+      "year": 2004,
+      "category": "Industry"
+    }
+  ]
+}

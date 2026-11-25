@@ -1,0 +1,61 @@
+# module-08.http: security requests S01-S13 (VS Code "REST Client" extension).
+# The key is read from api/requests/.env (ignored by Git):  OWNER_API_KEY=the-same-value-as-api/.env
+# NOTE: reconstructed by the playground author from the course's S-list; yours wins if it differs.
+@base = http://localhost:8000
+@key = {{$dotenv OWNER_API_KEY}}
+
+### S01 No key -> 401, code unauthorized
+GET {{base}}/api/messages
+
+### S02 Wrong key -> 403, code forbidden
+GET {{base}}/api/messages
+X-API-Key: wrong
+
+### S03 The right key -> 200, Cache-Control: no-store
+GET {{base}}/api/messages
+X-API-Key: {{key}}
+
+### S04 PATCH a project, no key, invalid body -> 401 (the key is checked BEFORE the body)
+PATCH {{base}}/api/projects/14
+Content-Type: application/json
+
+{ "budget": 5 }
+
+### S05 POST a message, no key -> 201 (the public contact form must still work)
+POST {{base}}/api/messages
+Content-Type: application/json
+
+{ "name": "Lab", "email": "lab@example.com", "message": "Public form still works" }
+
+### S06 One error format for validation -> 422, error.fields.category
+GET {{base}}/api/awards?category=Personal
+
+### S07 Unknown path -> 404 in OUR format
+GET {{base}}/api/nothing-here
+
+### S08 Wrong method -> 405 with an Allow header
+PUT {{base}}/api/messages/1
+Content-Type: application/json
+X-API-Key: {{key}}
+
+{}
+
+### S09 Cache-Control: public, max-age=300 on a public read
+GET {{base}}/api/awards
+
+### S10 Preflight from Live Server -> 200 + Access-Control-Allow-* headers
+OPTIONS {{base}}/api/messages
+Origin: http://127.0.0.1:5500
+Access-Control-Request-Method: GET
+Access-Control-Request-Headers: x-api-key
+
+### S11 Preflight from an unlisted origin -> 400
+OPTIONS {{base}}/api/messages
+Origin: https://evil.example
+Access-Control-Request-Method: GET
+
+### S12 GitHub proxy: send TWICE -> X-Cache MISS, then HIT. Search the body for github_pat_ (must not be there)
+GET {{base}}/api/github
+
+### S13 Set GITHUB_TOKEN=wrong in .env, restart the server -> 502, code upstream_error
+GET {{base}}/api/github

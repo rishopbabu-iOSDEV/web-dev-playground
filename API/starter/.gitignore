@@ -1,0 +1,18 @@
+# Never commit these (Module 5, slide 5)
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+# Python housekeeping
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Local logs and OS/editor files
+*.log
+.DS_Store
+Thumbs.db
